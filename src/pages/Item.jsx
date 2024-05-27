@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import '../css/Item.scss'
 import { FaCartPlus, FaGift, FaPhoneSquareAlt, FaTruck } from 'react-icons/fa';
 import { LiaLongArrowAltLeftSolid, LiaLongArrowAltRightSolid } from 'react-icons/lia';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaBasketShopping, FaCartShopping } from 'react-icons/fa6';
 import RecommendItem from '../components/RecommendItem';
 import axios from 'axios'
+import Type from '../components/Type';
 
 const Item = () => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [img, setImg] = useState();
   const images = ["/qua/bo.png", "/qua/chuoi.png", "/qua/bo.png", "/qua/chuoi.png", "/qua/chuoi.png", "/qua/chuoi.png"]
@@ -15,8 +17,48 @@ const Item = () => {
     setImg(e.target.src)
   }
 
+
+
+  // SUBMIT
+  const [itemList, setItemList] = useState([]);
+  useEffect(() => {
+    setItemList(types.map(type => ({ name: type.name, tag: type.tags[0] })));
+  }, [])
+
+  const handleType = (name, tag) => {
+    const index = itemList.findIndex(item => item.name === name);
+    if (index !== -1) {
+      itemList[index].tag = tag;
+      setItemList([...itemList]); // spread operator to trigger re-render
+    } else {
+      setItemList([])
+    }
+  };
+
   const handleBuy = (e) => {
     e.preventDefault();
+    const addItem = {
+      itemName: "wwdadad",
+      quantity,
+      originalPrice: 10000,
+      price: 10000 * quantity,
+      type: [
+        ...itemList
+      ]
+    }
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || []
+    const existingItemIndex = existingCart.findIndex(e => e.itemName == addItem.itemName)
+    if (existingItemIndex !== -1) {
+      console.log("true")
+      existingCart[existingItemIndex] = addItem
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+    }
+    else {
+      console.log("false")
+      const updatedCart = [...existingCart, addItem];
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    }
+    navigate('/')
   }
 
   // Chuyển [b] thành <b> và [/b] thành </b>, chuyển [url] => <a>, [img] => <img>
@@ -37,7 +79,29 @@ const Item = () => {
 
 
   // test codes start here
-  const types = ["type 1", "type 2", "type 3"]
+  const types = [
+    {
+      name: "loại",
+      tags: ["loại 1", "loại 2", "loại 3"]
+    },
+    {
+      name: "kich co",
+      tags: ["kich co 1", "kich co 2", "kich co 3"]
+    },
+    {
+      name: "dag",
+      tags: ["loại 1", "loại 2", "loại 3"]
+    },
+    {
+      name: "afsffassfo",
+      tags: ["kich co 1", "kich co 2", "kich co 3"]
+    }
+  ]
+
+
+
+
+
   const [result, setResult] = useState("")
   axios.post("https://api.vndb.org/kana/vn",
     {
@@ -51,7 +115,7 @@ const Item = () => {
       }
     }).then(e => {
       setResult(e.data.results[0].description)
-      console.log(result)
+      // console.log(result)
     })
 
   // test codes end here
@@ -107,45 +171,16 @@ const Item = () => {
               <div className="left-buy">
                 <div className="quantity">
                   <h3>Số lượng</h3>
-                  <input type="number" value={quantity} min={1} name='quantity' onChange={(e) => setQuantity(e.target.value)} />
+                  <input type="number" value={quantity} min={1} name='quantity' onChange={(e) => setQuantity(parseInt(e.target.value))} />
                 </div>
-                <div className="submit-btn">
+                <div className="buy-btn">
                   <button type="submit" onClick={handleBuy} ><FaCartShopping /><p>Mua hàng</p></button>
                 </div>
               </div>
               <div className="types">
-                <div className="type">
-                  <h3>Loại</h3>
-                  <select name="types" id="types">
-                    {types.map((e, i) => (
-                      <option value={e} key={i}>{e}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="type">
-                  <h3>Loại</h3>
-                  <select name="types" id="types">
-                    {types.map((e, i) => (
-                      <option value={e} key={i}>{e}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="type">
-                  <h3>Loại</h3>
-                  <select name="types" id="types">
-                    {types.map((e, i) => (
-                      <option value={e} key={i}>{e}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="type">
-                  <h3>Loại</h3>
-                  <select name="types" id="types">
-                    {types.map((e, i) => (
-                      <option value={e} key={i}>{e}</option>
-                    ))}
-                  </select>
-                </div>
+                {types.map((e, i) => (
+                  <Type props={e} key={i} onChange={handleType} />
+                ))}
               </div>
             </form>
           </div>

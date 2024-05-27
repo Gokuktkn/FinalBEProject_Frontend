@@ -44,6 +44,7 @@ const Header = () => {
               <div className="header-top-left-cart">
                 <IoMdCart />
                 <p>Giỏ hàng</p>
+                <p>{localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')).map(e => e.quantity).reduce((a, c) => a + c, 0) : 0}</p>
               </div>
             </Link>
           </div>
@@ -87,7 +88,7 @@ const Header = () => {
             <NavLink to={'/about'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>GIỚI THIỆU</NavLink>
           </div>
           <div className="header-bottom-nav header-bottom-dropdown">
-            <NavLink to={'/products/all'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>SẢN PHẨM</NavLink>
+            <NavLink to={'/san-pham/all'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>SẢN PHẨM</NavLink>
           </div>
           <div className="header-bottom-nav">
             <NavLink to={'/news'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>TIN TỨC</NavLink>
