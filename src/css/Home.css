@@ -1,0 +1,39 @@
+.body {
+    margin-top: 4rem;
+    width: 100%;
+    font-family: "Roboto Slab", serif;
+}
+
+
+/* BODY TOP CSS */
+/* TOP LEFT */
+.body-top>.container {
+    margin: 0 auto;
+    max-width: 1170px;
+    height: 520px;
+    display: grid;
+    grid-template-columns: 39% 61%;
+}
+.body-top-left {
+    --size: calc(1170px * 39 / 100);
+    width: 100%;
+}
+.body-top-left .item-info {
+    width: var(--size);
+    height: var(--size);
+    display: block;
+    color: black;
+    position: relative;
+    border: 1px rgb(180, 180, 180, .4) solid;
+}
+/* TOP RIGHT */
+.body-top-right {
+    padding: 2px 2.5rem;
+    display: grid;
+    grid-column: auto;
+    grid-template-rows: 15% 15% 60% 10%;
+    gap: 20px;
+}
+.body-top-right-header {
+    font-size: 30px;
+}

@@ -1,0 +1,42 @@
+.search-section {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-section input {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.search-section button {
+  padding: 8px 16px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 20px;
+}
+
+.product-details {
+  margin-top: 20px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
