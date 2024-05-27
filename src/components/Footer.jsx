@@ -12,7 +12,7 @@ const Footer = () => {
     }
     return (
         <div className='footer'>
-            <div className="footer-top">
+            {/* <div className="footer-top">
                 <div className="container">
                     <div className="footer-top-nav">
                         <NavLink to={'/'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>TRANG CHỦ</NavLink>
@@ -36,7 +36,7 @@ const Footer = () => {
                         <NavLink to={'/contact'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>LIÊN HỆ</NavLink>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="footer-middle">
                 <div className="container">
                     <div className="footer-middle-left">
