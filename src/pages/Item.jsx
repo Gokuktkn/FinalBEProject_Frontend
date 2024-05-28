@@ -49,16 +49,14 @@ const Item = () => {
     const existingCart = JSON.parse(localStorage.getItem('cart')) || []
     const existingItemIndex = existingCart.findIndex(e => e.itemName == addItem.itemName)
     if (existingItemIndex !== -1) {
-      console.log("true")
       existingCart[existingItemIndex] = addItem
       localStorage.setItem('cart', JSON.stringify(existingCart));
     }
     else {
-      console.log("false")
       const updatedCart = [...existingCart, addItem];
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
-    navigate('/')
+    navigate('/gio-hang')
   }
 
   // Chuyển [b] thành <b> và [/b] thành </b>, chuyển [url] => <a>, [img] => <img>

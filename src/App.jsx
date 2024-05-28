@@ -13,6 +13,7 @@ import About from './pages/About.jsx'
 import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn.jsx'
 import Collections from './pages/Collections.jsx'
+import Cart from './pages/Cart.jsx'
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
         <Route path='/san-pham/:id' element={<Item />}></Route>
         <Route path='/san-pham/all' element={<Collections />}></Route>
         <Route path='/tim-kiem' element={<Search />}></Route>
-        <Route path='/gio-hang' /*element={<Cart />}*/></Route>
+        <Route path='/gio-hang' element={<Cart />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/dang-ky' element={<SignUp />}></Route>
         <Route path='/dang-nhap' element={<SignIn />}></Route>
