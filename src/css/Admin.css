@@ -2,35 +2,46 @@
     max-width: 1170px;
     margin: 25px auto;
     display: flex;
-    background-color: #343A40;
     border-radius: 5px;
 }
 
 .admin-navbar {
     flex: 1;
-    background-color: #343a40;
     padding: 20px;
-    color: white;
     min-width: 200px;
     border-radius: 5px;
 }
 
 .admin-navbar-content {
+    border: 1px solid #1DC483;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
 }
 
 .nav {
-    color: white;
+    color: black;
     padding: 10px 15px;
     text-decoration: none;
-    border-radius: 4px;
     transition: background-color 0.3s;
 }
 
 .nav:hover {
-    background-color: #495057;
+    background-color: #21e69a;
+}
+
+.nav.active {
+    background-color: #1DC483;
+}
+
+.nav-top{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.nav-bot{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .admin-content {
