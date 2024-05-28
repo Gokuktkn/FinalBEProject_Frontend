@@ -18,6 +18,11 @@ const Item = () => {
   }
 
 
+  const formattedNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+
 
   // SUBMIT
   const [itemList, setItemList] = useState([]);
@@ -34,26 +39,28 @@ const Item = () => {
       setItemList([])
     }
   };
+  const price = 10000;
 
   const handleBuy = (e) => {
     e.preventDefault();
-    const addItem = {
-      itemName: "wwdadad",
+    const saveItem = {
+      itemName: "aaa",
+      image: "/qua/bo.png",
       quantity,
       originalPrice: 10000,
-      price: 10000 * quantity,
+      price: price * quantity,
       type: [
         ...itemList
       ]
     }
     const existingCart = JSON.parse(localStorage.getItem('cart')) || []
-    const existingItemIndex = existingCart.findIndex(e => e.itemName == addItem.itemName)
+    const existingItemIndex = existingCart.findIndex(e => e.itemName == saveItem.itemName)
     if (existingItemIndex !== -1) {
-      existingCart[existingItemIndex] = addItem
+      existingCart[existingItemIndex] = saveItem
       localStorage.setItem('cart', JSON.stringify(existingCart));
     }
     else {
-      const updatedCart = [...existingCart, addItem];
+      const updatedCart = [...existingCart, saveItem];
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
     navigate('/gio-hang')
@@ -135,12 +142,12 @@ const Item = () => {
             <h1>Chuối tiêu</h1>
             <div className="prices">
               <div className="price">
-                <h1>25.000₫</h1>
+                <h1>{formattedNumber(25000)}₫</h1>
               </div>
               <div className="discount">
                 <del>
                   <i>
-                    60.000₫
+                    {formattedNumber(60000)}₫
                   </i>
                 </del>
               </div>
