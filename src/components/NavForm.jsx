@@ -6,10 +6,10 @@ const NavForm = () => {
     return (
         <>
             <div className="sign-in-nav">
-                <NavLink to={'/dang-nhap'}>Đăng nhập</NavLink>
+                <NavLink to={'/signin'}>Đăng nhập</NavLink>
             </div>
             <div className="sign-up-nav">
-                <NavLink to={'/dang-ky'}>Đăng ký</NavLink>
+                <NavLink to={'/signup'}>Đăng ký</NavLink>
             </div>
         </>
     )

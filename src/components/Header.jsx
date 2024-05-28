@@ -28,19 +28,19 @@ const Header = () => {
       <div className="header-top">
         <div className="container">
           <div className="header-top-left">
-            <Link to={'/dang-nhap'}>
+            <Link to={'/signin'}>
               <div className="header-top-left-signin">
                 <PiSignInBold />
                 <p>Đăng nhập</p>
               </div>
             </Link>
-            <Link to={'/dang-ky'}>
+            <Link to={'/signup'}>
               <div className="header-top-left-signup">
                 <FaUserAlt />
                 <p>Đăng ký</p>
               </div>
             </Link>
-            <Link to={'/gio-hang'}>
+            <Link to={'/cart'}>
               <div className="header-top-left-cart">
                 <IoMdCart />
                 <p>Giỏ hàng</p>
@@ -88,7 +88,7 @@ const Header = () => {
             <NavLink to={'/about'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>GIỚI THIỆU</NavLink>
           </div>
           <div className="header-bottom-nav header-bottom-dropdown">
-            <NavLink to={'/san-pham/all'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>SẢN PHẨM</NavLink>
+            <NavLink to={'/product/all'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>SẢN PHẨM</NavLink>
           </div>
           <div className="header-bottom-nav">
             <NavLink to={'/news'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>TIN TỨC</NavLink>

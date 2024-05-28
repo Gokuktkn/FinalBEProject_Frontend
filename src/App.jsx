@@ -24,13 +24,13 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/admin/*' element={<Admin />}></Route>
-        <Route path='/san-pham/:id' element={<Item />}></Route>
-        <Route path='/san-pham/all' element={<Collections />}></Route>
-        <Route path='/tim-kiem' element={<Search />}></Route>
-        <Route path='/gio-hang' element={<Cart />}></Route>
+        <Route path='/product/:id' element={<Item />}></Route>
+        <Route path='/product/all' element={<Collections />}></Route>
+        <Route path='/search' element={<Search />}></Route>
+        <Route path='/cart' element={<Cart />}></Route>
         <Route path='/about' element={<About />}></Route>
-        <Route path='/dang-ky' element={<SignUp />}></Route>
-        <Route path='/dang-nhap' element={<SignIn />}></Route>
+        <Route path='/signup' element={<SignUp />}></Route>
+        <Route path='/signin' element={<SignIn />}></Route>
         <Route path='*' element={<NotFound />}></Route>
       </Routes>
       <Footer></Footer>

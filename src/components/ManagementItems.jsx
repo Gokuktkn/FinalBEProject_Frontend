@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 function ManagementItems({ product, onDelete }) {
     const navigate = useNavigate();
@@ -14,9 +16,9 @@ function ManagementItems({ product, onDelete }) {
             <td>{product.name}</td>
             <td><img src={product.image} alt={product.name} width="50" /></td>
             <td>{product.price}</td>
-            <td>
-                <button onClick={() => onDelete(product.id)}>Xóa</button>
-                <button onClick={handleEdit}>Chỉnh sửa</button>
+            <td className="action-buttons">
+                <button className="icon-button" onClick={() => onDelete(product.id)}><MdDelete /></button>
+                <button className="icon-button" onClick={handleEdit}><FaEdit /></button>
             </td>
         </tr>
     );
