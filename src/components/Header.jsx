@@ -20,7 +20,7 @@ const Header = () => {
     }
     else {
       setVerify(false)
-      navigate(`/tim-kiem?key${searchInput}`)
+      navigate(`/search?key=${searchInput}`)
     }
   }
   return (

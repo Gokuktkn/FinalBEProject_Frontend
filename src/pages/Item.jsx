@@ -63,7 +63,7 @@ const Item = () => {
       const updatedCart = [...existingCart, saveItem];
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
-    navigate('/gio-hang')
+    navigate('/cart')
   }
 
   // Chuyển [b] thành <b> và [/b] thành </b>, chuyển [url] => <a>, [img] => <img>
