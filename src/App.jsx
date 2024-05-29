@@ -17,6 +17,91 @@ import Cart from './pages/Cart.jsx'
 
 function App() {
 
+  // let firstTime = true
+  const cycleTokenAuth = () => {
+    if (localStorage.getItem('token')) {
+      // gọi api để lấy thông tin người dùng và check thông tin token
+
+      // nếu token valid
+      if (true) {
+        // tạo refreshToken cùng token mới
+        // lấy thông tin người dùng
+        localStorage.setItem('token', 'newToken')
+        localStorage.setItem('refreshToken', 'newRefreshToken')
+        localStorage.setItem('user', 'user')
+      }
+      // nếu token invalid
+      else {
+        // lấy refreshToken
+        if (localStorage.getItem('refreshToken')) {
+          // gọi api để kiểm tra thông tin refreshToken
+
+          // nếu refreshToken valid
+          if (true) {
+            // tạo refreshToken cùng token mới
+            // lấy thông tin người dùng
+            localStorage.setItem('token', 'token')
+            localStorage.setItem('refreshToken', 'refreshToken')
+            localStorage.setItem('user', 'user')
+          }
+          else {
+            // xóa hết dữ liệu
+            localStorage.removeItem('cart')
+            localStorage.removeItem('token')
+            localStorage.removeItem('refreshToken')
+            localStorage.removeItem('user')
+          }
+        }
+        // refreshToken invalid
+        else {
+          // xóa hết dữ liệu
+          localStorage.removeItem('cart')
+          localStorage.removeItem('token')
+          localStorage.removeItem('refreshToken')
+          localStorage.removeItem('user')
+        }
+      }
+    }
+    else if (localStorage.getItem('refreshToken')) {
+      // api kiểm tra refreshToken
+
+      if (true) {
+        // tạo refreshToken cùng token mới
+        // lấy thông tin người dùng
+        localStorage.setItem('token', 'token')
+        localStorage.setItem('refreshToken', 'refreshToken')
+        localStorage.setItem('user', 'user')
+      }
+      // token invalid
+      else {
+        // xóa hết dữ liệu
+        localStorage.removeItem('cart')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('user')
+      }
+    }
+    else {
+      localStorage.removeItem('cart')
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('user')
+    }
+    console.log('first')
+  }
+  if (!localStorage.getItem('token') && !localStorage.getItem('refreshToken')) {
+    localStorage.removeItem('cart')
+    localStorage.removeItem('user')
+    localStorage.setItem('token', 'token')
+    localStorage.setItem('refreshToken', 'rt')
+  }
+  else {
+    cycleTokenAuth()
+    setInterval(() => {
+      cycleTokenAuth()
+    }, 5 * 10000);
+  }
+
   return (
     <>
       <Header></Header>

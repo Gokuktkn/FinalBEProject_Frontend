@@ -45,6 +45,9 @@ const SignIn = () => {
                         role: "user"
                     }
                 ))
+                // api call create token here
+                localStorage.setItem('token', "somethinghere")
+                localStorage.setItem('refreshToken', "somewherehere")
                 navigate('/');
             } else {
                 setError('Email hoặc mật khẩu không đúng');

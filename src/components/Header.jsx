@@ -27,27 +27,33 @@ const Header = () => {
     <div className='header'>
       <div className="header-top">
         <div className="container">
-          <div className="header-top-left">
-            <Link to={'/signin'}>
-              <div className="header-top-left-signin">
-                <PiSignInBold />
-                <p>Đăng nhập</p>
+          {
+            !localStorage.getItem('user') ?
+              <div className="header-top-left">
+                <Link to={'/signin'}>
+                  <div className="header-top-left-signin">
+                    <PiSignInBold />
+                    <p>Đăng nhập</p>
+                  </div>
+                </Link>
+                <Link to={'/signup'}>
+                  <div className="header-top-left-signup">
+                    <FaUserAlt />
+                    <p>Đăng ký</p>
+                  </div>
+                </Link>
+              </div> :
+              <div className="header-top-left">
+                <div className="profile"></div>
+                <Link to={'/cart'}>
+                  <div className="header-top-left-cart">
+                    <IoMdCart />
+                    <p>Giỏ hàng</p>
+                    <p>{localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')).map(e => e.quantity).reduce((a, c) => a + c, 0) : 0}</p>
+                  </div>
+                </Link>
               </div>
-            </Link>
-            <Link to={'/signup'}>
-              <div className="header-top-left-signup">
-                <FaUserAlt />
-                <p>Đăng ký</p>
-              </div>
-            </Link>
-            <Link to={'/cart'}>
-              <div className="header-top-left-cart">
-                <IoMdCart />
-                <p>Giỏ hàng</p>
-                <p>{localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')).map(e => e.quantity).reduce((a, c) => a + c, 0) : 0}</p>
-              </div>
-            </Link>
-          </div>
+          }
           <div className="header-top-right">
             <p className="header-top-right-contact">
               Thông tin liên hệ

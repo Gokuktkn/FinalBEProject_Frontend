@@ -42,6 +42,7 @@ const SignUp = () => {
       if (existingUser) {
         setError('Email đã tồn tại');
       } else {
+        // api create new user here
         mockUsers.push({ email, password });
         localStorage.setItem('user', JSON.stringify(
           {
@@ -49,6 +50,11 @@ const SignUp = () => {
             role: "user"
           }
         ))
+        // api get new user here
+
+        // api create token from new user here
+        localStorage.setItem('token', "somethinghere")
+        localStorage.setItem('refreshToken', "somewherehere")
         navigate('/');
       }
       setLoading(false);
