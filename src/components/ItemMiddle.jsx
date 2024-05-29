@@ -3,19 +3,22 @@ import { FaStar } from 'react-icons/fa'
 import { IoMdCart } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 
-const ItemMiddle = () => {
+const ItemMiddle = ({ props }) => {
+    const formattedNumber = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
     return (
         <>
-            <Link to={'/'} className='link-product-cart-2' >
+            <Link to={`/product/${props.itemName}`} className='link-product-cart-2' >
                 <div className="discount">
-                    <p>-10%</p>
+                    <p>-${Math.ceil(props.discount / props.price)}%</p>
                     <FaStar />
                 </div>
-                <img src="https://bizweb.dktcdn.net/thumb/large/100/053/074/products/nho.jpg?v=1457542270730" alt="" />
+                <img src={props.img[0]} alt="" />
                 <div className="description">
-                    <h2>Bơ vỏ sần</h2>
-                    <strong><i>Giá: </i>20.000đ</strong><br></br>
-                    <del><i>Giá: </i>45.000đ</del>
+                    <h2>{props.itemName}</h2>
+                    <strong><i>Giá: </i>{formattedNumber(props.price)}đ</strong><br></br>
+                    <del><i>Giá: </i>{formattedNumber(props.discount)}đ</del>
                     <button className='btn-buy'>
                         <IoMdCart />
                         Mua hàng

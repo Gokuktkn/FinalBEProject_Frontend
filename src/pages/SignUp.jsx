@@ -55,6 +55,7 @@ const SignUp = () => {
         // api create token from new user here
         localStorage.setItem('token', "somethinghere")
         localStorage.setItem('refreshToken', "somewherehere")
+        localStorage.removeItem('cart')
         navigate('/');
       }
       setLoading(false);

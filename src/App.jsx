@@ -19,7 +19,7 @@ function App() {
 
   // let firstTime = true
   const cycleTokenAuth = () => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token') != null) {
       // gọi api để lấy thông tin người dùng và check thông tin token
 
       // nếu token valid
@@ -28,7 +28,7 @@ function App() {
         // lấy thông tin người dùng
         localStorage.setItem('token', 'newToken')
         localStorage.setItem('refreshToken', 'newRefreshToken')
-        localStorage.setItem('user', 'user')
+        // localStorage.setItem('user', 'user')
       }
       // nếu token invalid
       else {
@@ -62,7 +62,7 @@ function App() {
         }
       }
     }
-    else if (localStorage.getItem('refreshToken')) {
+    else if (localStorage.getItem('refreshToken') !=null) {
       // api kiểm tra refreshToken
 
       if (true) {
@@ -89,11 +89,9 @@ function App() {
     }
     console.log('first')
   }
-  if (!localStorage.getItem('token') && !localStorage.getItem('refreshToken')) {
+  if (localStorage.getItem('token') == null && localStorage.getItem('refreshToken') == null) {
     localStorage.removeItem('cart')
     localStorage.removeItem('user')
-    localStorage.setItem('token', 'token')
-    localStorage.setItem('refreshToken', 'rt')
   }
   else {
     cycleTokenAuth()

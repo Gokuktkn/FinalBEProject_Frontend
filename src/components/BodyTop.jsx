@@ -7,7 +7,7 @@ const BodyTop = () => {
     const [itemInfo, setItemInfo] = useState(false)
     return (
         <>
-            <Link to={'/'} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }}>
+            <Link to={`/product/bo`} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }}>
 
                 <div className="info" style={!itemInfo ? {
                     visibility: "hidden",

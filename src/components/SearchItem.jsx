@@ -10,29 +10,30 @@ const SearchItem = ({ props }) => {
   }
 
   // START TEST CODE
-  let price = 1000000;
-  let discount = 106969;
   // END TEST CODE
 
 
 
   return (
-    <div className='item'>
-      <div className="discount-percentage">
-        <p>-&nbsp;</p>
-        <p>30%&nbsp;</p>
-        <FaStar />
+    <Link to={`/product/${props.itemName}`} className='redirect-btn'>
+      <div className='item'>
+        <div className="discount-percentage">
+          <p>-{Math.ceil(props.discount / props.price)}%;</p>
+          <FaStar />
+        </div>
+        <div className="top-img">
+          <img src={props.img[0]} alt="" />
+        </div>
+        <div className="price-tags">
+          <p className='name-tag'>{props.itemName}</p>
+          <h3 className='price-tag'><i>Giá:&nbsp;</i>{formattedNumber(props.price)}₫</h3>
+          <del className='discount-tag'><i>Giá: {formattedNumber(props.discount)}₫</i></del>
+          <button>
+          <FaShoppingCart /><p>Mua hàng</p>
+          </button>
+        </div>
       </div>
-      <div className="top-img">
-        <img src="/qua/bo.png" alt="" />
-      </div>
-      <div className="price-tags">
-        <p className='name-tag'>Thứ gì đó</p>
-        <h3 className='price-tag'><i>Giá:&nbsp;</i>{formattedNumber(price)}₫</h3>
-        <del className='discount-tag'><i>Giá: {formattedNumber(discount)}₫</i></del>
-        <Link to={`/san-pham/${'1'}`} className='redirect-btn'><FaShoppingCart /><p>Mua hàng</p></Link>
-      </div>
-    </div>
+    </Link>
   )
 }
 

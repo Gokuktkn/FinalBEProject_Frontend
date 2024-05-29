@@ -1,17 +1,17 @@
 import React from 'react'
 import '../css/Rating.scss'
 
-const Rating = () => {
+const Rating = ({ props }) => {
   return (
     <div className='rating'>
-      <img src="/qua/bo.png" alt="" />
+      <img src={props.user.profile_picture} alt="" />
       <div className="text">
         <div className="rating-text"></div>
         <div className="ok">
-          <q>Chúng tôi rất hài lòng về chất lượng sản phẩm của shop cũng như về chất lượng dịch vụ. Chúc shop làm ăn phát đạt và có nhiều dịch vụ tốt hơn nữa.</q>
+          <q>{props.feedback}</q>
         </div>
         <br />
-        <span><i>Khách hàng:&nbsp;&nbsp;</i></span><span style={{color: "#1dc483"}}>Name</span>
+        <span><i>Khách hàng:&nbsp;&nbsp;</i></span><span style={{ color: "#1dc483" }}>{props.user.username}</span>
       </div>
     </div>
   )

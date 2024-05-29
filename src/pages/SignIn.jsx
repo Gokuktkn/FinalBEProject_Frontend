@@ -48,6 +48,7 @@ const SignIn = () => {
                 // api call create token here
                 localStorage.setItem('token', "somethinghere")
                 localStorage.setItem('refreshToken', "somewherehere")
+                localStorage.removeItem('cart')
                 navigate('/');
             } else {
                 setError('Email hoặc mật khẩu không đúng');

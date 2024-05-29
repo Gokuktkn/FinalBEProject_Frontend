@@ -27,19 +27,119 @@ const Home = () => {
   const swiperRef4 = useRef(null)
 
 
+  
+  
+  // TEST CODE
   // danh gia khach hang
-  // let newRating = []
-  // if (rating.length % 2 === 0) {
-  //   for (let i = 0; i < rating.length; i += 2) {
-  //     console.log("hello")
-  //     newRating.push([rating[i], rating[i + 1]])
-  //   }
-  // } else {
-  //   for (let i = 1; i < rating.length; i += 2) {
-  //     newRating.push([rating[i], rating[i + 1]])
-  //   }
-  //   newRating.push([rating[0]])
-  // }
+  const rating = [
+    {
+      user: {
+        username: "Anna",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Danny",
+        profile_picture: "/qua/chuoi.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "John",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Howard",
+        profile_picture: "/qua/chuoi.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Anna",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Anna",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Anna",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+    {
+      user: {
+        username: "Anna",
+        profile_picture: "/qua/bo.png"
+      },
+      feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
+    },
+  ]
+  const itemBottom = [
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    }
+  ]
+  // END TEST CODE
 
   return (
     <div className="body">
@@ -66,13 +166,13 @@ const Home = () => {
                   onSwiper={(swiper) => { swiperRef1.current = swiper; }}
                 >
                   <SwiperSlide>
-                    <ItemTop />
+                    <ItemTop props={itemBottom[0]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemTop />
+                    <ItemTop props={itemBottom[1]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemTop />
+                    <ItemTop props={itemBottom[2]} />
                   </SwiperSlide>
                 </Swiper>
 
@@ -120,12 +220,7 @@ const Home = () => {
               <div className="body-middle-top-left-content">
                 <h3 style={{ fontWeight: "600", borderBottom: ".5px solid #e6e6e6", paddingBottom: ".5rem" }}>SẢN PHẨM MỚI</h3>
                 <div className="body-middle-top-left-content-new">
-                  <ItemMiddle />
-                  <ItemMiddle />
-                  <ItemMiddle />
-                  <ItemMiddle />
-                  <ItemMiddle />
-                  <ItemMiddle />
+                  {itemBottom.map((e, i) => <ItemMiddle key={i} props={e} />)}
                 </div>
                 <div className="st-border"></div>
                 <div className="body-middle-top-left-content-discount">
@@ -143,22 +238,22 @@ const Home = () => {
                         onSwiper={(swiper) => { swiperRef2.current = swiper; }}
                       >
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[0]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[1]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[2]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[3]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[4]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle></ItemMiddle>
+                          <ItemMiddle props={itemBottom[5]} />
                         </SwiperSlide>
                       </Swiper>
                       <div className="btn-controls">
@@ -174,15 +269,13 @@ const Home = () => {
               <div className="col2-row1">
                 <h3>DANH MỤC</h3>
                 <ul>
-                  <li><Link>Hoa quả sạch</Link></li>
+                  <li><Link to={'/product/fruits'}>Hoa quả sạch</Link></li>
                   <hr />
-                  <li><Link>Rau sạch</Link></li>
+                  <li><Link to={'/product/vegetables'}>Rau sạch</Link></li>
                   <hr />
-                  <li><Link>Thịt sạch</Link></li>
+                  <li><Link to={'/product/meats'}>Thịt sạch</Link></li>
                   <hr />
-                  <li><Link>Thuỷ - Hải sản sạch</Link></li>
-                  <hr />
-                  <li><Link>Gạo - Hạt khô</Link></li>
+                  <li><Link to={'/product/seafood'}>Thuỷ - Hải sản sạch</Link></li>
                 </ul>
               </div>
               <div className="col2-row2">
@@ -229,22 +322,22 @@ const Home = () => {
                   onSwiper={(swiper) => { swiperRef3.current = swiper; }}
                 >
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[0]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[1]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[2]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[3]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[4]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom />
+                    <ItemBottom props={itemBottom[5]} />
                   </SwiperSlide>
                 </Swiper>
                 <div className="btn-controls">
@@ -271,30 +364,30 @@ const Home = () => {
                   slidesPerView={1}
                   scrollbar={{ draggable: true }}
                   onSwiper={(swiper) => { swiperRef4.current = swiper; }}
-                  pagination={{clickable: true, el: '.swiper-pagination'}}
+                  pagination={{ clickable: true, el: '.swiper-pagination' }}
                 >
                   <SwiperSlide>
                     <div className='rating-container'>
-                      <Rating />
-                      <Rating />
+                      <Rating props={rating[0]} />
+                      <Rating props={rating[1]} />
                     </div>
                   </SwiperSlide>
                   <SwiperSlide>
                     <div className='rating-container'>
-                      <Rating />
-                      <Rating />
+                      <Rating props={rating[2]} />
+                      <Rating props={rating[3]} />
                     </div>
                   </SwiperSlide>
                   <SwiperSlide>
                     <div className='rating-container'>
-                      <Rating />
-                      <Rating />
+                      <Rating props={rating[4]} />
+                      <Rating props={rating[5]} />
                     </div>
                   </SwiperSlide>
                   <SwiperSlide>
                     <div className='rating-container'>
-                      <Rating />
-                      <Rating />
+                      <Rating props={rating[6]} />
+                      <Rating props={rating[7]} />
                     </div>
                   </SwiperSlide>
                   <div className="swiper-pagination"></div>

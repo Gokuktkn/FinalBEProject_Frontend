@@ -43,27 +43,32 @@ const Item = () => {
 
   const handleBuy = (e) => {
     e.preventDefault();
-    const saveItem = {
-      itemName: "aaa",
-      image: "/qua/bo.png",
-      quantity,
-      originalPrice: 10000,
-      price: price * quantity,
-      type: [
-        ...itemList
-      ]
-    }
-    const existingCart = JSON.parse(localStorage.getItem('cart')) || []
-    const existingItemIndex = existingCart.findIndex(e => e.itemName == saveItem.itemName)
-    if (existingItemIndex !== -1) {
-      existingCart[existingItemIndex] = saveItem
-      localStorage.setItem('cart', JSON.stringify(existingCart));
+    if (localStorage.getItem('user') == null) {
+      navigate('/signin')
     }
     else {
-      const updatedCart = [...existingCart, saveItem];
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      const saveItem = {
+        itemName: "aaa",
+        image: "/qua/bo.png",
+        quantity,
+        originalPrice: 10000,
+        price: price * quantity,
+        type: [
+          ...itemList
+        ]
+      }
+      const existingCart = JSON.parse(localStorage.getItem('cart')) || []
+      const existingItemIndex = existingCart.findIndex(e => e.itemName == saveItem.itemName)
+      if (existingItemIndex !== -1) {
+        existingCart[existingItemIndex] = saveItem
+        localStorage.setItem('cart', JSON.stringify(existingCart));
+      }
+      else {
+        const updatedCart = [...existingCart, saveItem];
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      }
+      navigate('/cart')
     }
-    navigate('/cart')
   }
 
   // Chuyển [b] thành <b> và [/b] thành </b>, chuyển [url] => <a>, [img] => <img>

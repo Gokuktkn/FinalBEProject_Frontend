@@ -16,6 +16,94 @@ const theme = createTheme({
 });
 
 const Search = () => {
+
+  // DELETE after use
+
+  const array = [
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/bo.png"
+      ]
+    },
+    {
+      itemName: "what",
+      price: 25000,
+      discount: 30000,
+      img: [
+        "/qua/chuoi.png"
+      ]
+    },
+    
+  ]
+
+
   const [param] = new useSearchParams();
   const data = param.get("key");
 
@@ -27,20 +115,14 @@ const Search = () => {
   // START TEST CODE
 
   // TODO: array is API ITEMS GOT CALLED
-  let array = []
+  // let array = []
   let finalArray = []
-
-
-  // random array setup
-  for (let i = 0; i < 21; i++) {
-    array.push(i)
-  }
 
   for (let i = 0; i < array.length; i += 8) {
     finalArray.push(array.slice(i, i + 8));
   }
 
-  console.log(finalArray)
+  console.log(finalArray.length, array.length)
 
 
   // END TEST CODE
@@ -63,7 +145,7 @@ const Search = () => {
     </>) : (<div className='search-container'>
       <div className="pagination">
         <ThemeProvider theme={theme}>
-          <Pagination count={Math.ceil(array.length / 10)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
+          <Pagination count={Math.ceil(array.length / 8)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
         </ThemeProvider>
       </div>
       <div className="results">
