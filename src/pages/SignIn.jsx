@@ -39,7 +39,12 @@ const SignIn = () => {
         setTimeout(() => {
             const user = mockUsers.find(user => user.email === email && user.password === password);
             if (user) {
-                alert('Đăng nhập thành công');
+                localStorage.setItem('user', JSON.stringify(
+                    {
+                        username: "Little John",
+                        role: "user"
+                    }
+                ))
                 navigate('/');
             } else {
                 setError('Email hoặc mật khẩu không đúng');

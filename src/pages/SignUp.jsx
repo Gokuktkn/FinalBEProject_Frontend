@@ -43,7 +43,12 @@ const SignUp = () => {
         setError('Email đã tồn tại');
       } else {
         mockUsers.push({ email, password });
-        alert('Đăng ký thành công');
+        localStorage.setItem('user', JSON.stringify(
+          {
+            username: "Little John",
+            role: "user"
+          }
+        ))
         navigate('/');
       }
       setLoading(false);
