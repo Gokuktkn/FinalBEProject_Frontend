@@ -40,7 +40,7 @@ const SignIn = () => {
             const user = mockUsers.find(user => user.email === email && user.password === password);
             if (user) {
                 alert('Đăng nhập thành công');
-                navigate('/admin');
+                navigate('/');
             } else {
                 setError('Email hoặc mật khẩu không đúng');
             }

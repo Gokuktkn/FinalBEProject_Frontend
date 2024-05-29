@@ -44,7 +44,7 @@ const SignUp = () => {
       } else {
         mockUsers.push({ email, password });
         alert('Đăng ký thành công');
-        navigate('/login');
+        navigate('/');
       }
       setLoading(false);
     }, 1000); // Giả lập độ trễ khi đăng ký
