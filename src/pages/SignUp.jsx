@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import '../css/SignForm.scss'
-import "../css/Auth.css"
-import NavForm from '../components/NavForm'
+import React, { useState } from 'react';
+import '../css/SignForm.scss';
+import '../css/Auth.css';
+import NavForm from '../components/NavForm';
 import { useNavigate } from 'react-router-dom';
 
 const mockUsers = [
@@ -13,6 +13,7 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,7 +25,13 @@ const SignUp = () => {
 
     // Commented out API call
     // try {
-    //     const response = await axios.post('https://api.example.com/register', { name, email, password });
+    //     const formData = new FormData();
+    //     formData.append('name', name);
+    //     formData.append('email', email);
+    //     formData.append('password', password);
+    //     formData.append('avatar', avatar);
+
+    //     const response = await axios.post('https://api.example.com/register', formData);
     //     if (response.data.success) {
     //         alert('Đăng ký thành công');
     //         navigate('/login');
@@ -49,18 +56,19 @@ const SignUp = () => {
             username: "Little John",
             role: "user"
           }
-        ))
+        ));
         // api get new user here
 
         // api create token from new user here
-        localStorage.setItem('token', "somethinghere")
-        localStorage.setItem('refreshToken', "somewherehere")
-        localStorage.removeItem('cart')
+        localStorage.setItem('token', "somethinghere");
+        localStorage.setItem('refreshToken', "somewherehere");
+        localStorage.removeItem('cart');
         navigate('/');
       }
       setLoading(false);
     }, 1000); // Giả lập độ trễ khi đăng ký
   };
+
   return (
     <div className="log-form-container">
       <div className="log-form">
@@ -100,6 +108,15 @@ const SignUp = () => {
                 required
               />
             </div>
+            <div className="input-group">
+              <label htmlFor="avatar">Avatar</label>
+              <input
+                type="file"
+                id="avatar"
+                accept="image/*"
+                onChange={(e) => setAvatar(e.target.files[0])}
+              />
+            </div>
             {error && <p className="error">{error}</p>}
             <button type="submit" disabled={loading}>
               {loading ? 'Đang đăng ký...' : 'Đăng ký'}
@@ -108,7 +125,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

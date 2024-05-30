@@ -17,8 +17,8 @@ function ManagementItems({ product, onDelete }) {
             <td><img src={product.image} alt={product.name} width="50" /></td>
             <td>{product.price}</td>
             <td className="action-buttons">
-                <button className="icon-button" onClick={() => onDelete(product.id)}><MdDelete /></button>
-                <button className="icon-button" onClick={handleEdit}><FaEdit /></button>
+                <button className="icon-button del-button" onClick={() => onDelete(product.id)}><MdDelete className='management-icon'/></button>
+                <button className="icon-button edit-button" onClick={handleEdit}><FaEdit className='management-icon'/></button>
             </td>
         </tr>
     );

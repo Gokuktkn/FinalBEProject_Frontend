@@ -14,6 +14,7 @@ import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn.jsx'
 import Collections from './pages/Collections.jsx'
 import Cart from './pages/Cart.jsx'
+import Account from './pages/Account.jsx'
 
 function App() {
 
@@ -107,6 +108,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/admin/*' element={<Admin />}></Route>
+        <Route path='/account/*' element={<Account />}></Route>
         <Route path='/product/:id' element={<Item />}></Route>
         <Route path='/product/all' element={<Collections />}></Route>
         <Route path='/search' element={<Search />}></Route>

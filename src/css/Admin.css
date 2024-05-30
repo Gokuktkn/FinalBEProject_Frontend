@@ -1,18 +1,21 @@
-.admin-container {
+.admin-container,
+.account-container {
     max-width: 1170px;
     margin: 25px auto;
     display: flex;
     border-radius: 5px;
 }
 
-.admin-navbar {
+.admin-navbar,
+.account-navbar {
     flex: 1;
     padding: 20px;
     min-width: 200px;
     border-radius: 5px;
 }
 
-.admin-navbar-content {
+.admin-navbar-content,
+.account-navbar-content {
     border: 1px solid #1DC483;
     border-radius: 10px;
     display: flex;
@@ -34,12 +37,12 @@
     background-color: #1DC483;
 }
 
-.nav-top{
+.nav-top {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
-.nav-bot{
+.nav-bot {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -58,8 +61,11 @@
     background-color: #fff;
 }
 
-h1 {
-    color: #343a40;
+.content-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
 }
 
 .admin-content input[type="text"] {
@@ -83,4 +89,8 @@ button {
 
 button:hover {
     background-color: #13a06a;
+}
+
+textarea {
+    resize: none;
 }

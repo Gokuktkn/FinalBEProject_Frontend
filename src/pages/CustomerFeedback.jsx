@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import '../css/CustomerFeedback.css';
 
 // Giả lập dữ liệu ý kiến khách hàng
@@ -14,41 +15,46 @@ const CustomerFeedback = () => {
     const handleViewDetail = (feedback) => {
         setSelectedFeedback(feedback);
         feedback.read = true; // Đánh dấu là đã đọc khi xem chi tiết
-    };
 
-    const handleBackToList = () => {
-        setSelectedFeedback(null);
+        Swal.fire({
+            title: '<strong>Feedback Detail</strong>',
+            html: `
+                <p><strong>Name:</strong> ${feedback.name}</p>
+                <p><strong>Email:</strong> ${feedback.email}</p>
+                <p><strong>Message:</strong> ${feedback.message}</p>
+            `,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'Close',
+            cancelButtonText: 'Mark as Unread',
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                feedback.read = false; // Đánh dấu là chưa đọc khi người dùng chọn "Mark as Unread"
+                setSelectedFeedback(null); // Cập nhật trạng thái để giao diện phản ánh thay đổi
+            }
+        });
     };
 
     return (
-        <div className="customer-feedback-container">
-            <h2>Customer Feedback</h2>
-            {selectedFeedback ? (
-                <div className="feedback-detail-container">
-                    <button onClick={handleBackToList}>Back to List</button>
-                    <h3>Feedback Detail</h3>
-                    <p><strong>Name:</strong> {selectedFeedback.name}</p>
-                    <p><strong>Email:</strong> {selectedFeedback.email}</p>
-                    <p><strong>Message:</strong> {selectedFeedback.message}</p>
-                </div>
-            ) : (
-                <ul className="feedback-list">
-                    {feedbacks.map(feedback => (
-                        <li key={feedback.id} onClick={() => handleViewDetail(feedback)}>
-                            <div className="feedback-info">
-                                <div className="feedback-content">
-                                    <p><strong>{feedback.name}</strong></p>
-                                    <p>{feedback.email}</p>
-                                    <p>{feedback.message.substring(0, 50)}...</p>
-                                </div>
-                                <div className="checkbox">
-                                    <input type="checkbox" checked={feedback.read} readOnly />
-                                </div>
+        <div className="customer-feedback-container content-container">
+            <h1>Ý kiến từ khách hàng</h1>
+            <ul className="feedback-list">
+                {feedbacks.map(feedback => (
+                    <li key={feedback.id} onClick={() => handleViewDetail(feedback)}>
+                        <div className="feedback-info">
+                            <div className="feedback-content">
+                                <p><strong>{feedback.name}</strong></p>
+                                <p>{feedback.email}</p>
+                                <p>{feedback.message.substring(0, 50)}...</p>
                             </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
+                            <div className="checkbox">
+                                <input type="checkbox" checked={feedback.read} readOnly />
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

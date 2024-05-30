@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import "../css/Management.css";
 import ManagementItems from '../components/ManagementItems';
+import { IoSearch } from "react-icons/io5";
 
 const dummyProducts = [
     { id: 1, name: 'Sản phẩm 1', image: 'https://via.placeholder.com/150', price: 100000 },
@@ -45,19 +47,33 @@ function Management() {
     };
 
     const handleDelete = (productId) => {
-        if (window.confirm('Bạn có muốn xóa sản phẩm này không?')) {
-            // Call API to delete product
-            // axios.delete(`/api/products/${productId}`)
-            //     .then(() => {
-            //         setProducts(products.filter(product => product.id !== productId));
-            //         setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
-            //     })
-            //     .catch(error => console.error('Error deleting product:', error));
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa sản phẩm này không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Có, xóa nó!',
+            cancelButtonText: 'Hủy',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Call API to delete product
+                // axios.delete(`/api/products/${productId}`)
+                //     .then(() => {
+                //         setProducts(products.filter(product => product.id !== productId));
+                //         setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
+                //     })
+                //     .catch(error => console.error('Error deleting product:', error));
 
-            // Using dummy delete for now
-            setProducts(products.filter(product => product.id !== productId));
-            setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
-        }
+                // Using dummy delete for now
+                setProducts(products.filter(product => product.id !== productId));
+                setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
+
+                Swal.fire(
+                    'Đã xóa!',
+                    'Sản phẩm đã được xóa.',
+                    'success'
+                );
+            }
+        });
     };
 
     return (
@@ -70,7 +86,7 @@ function Management() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button onClick={handleSearch}>Tìm kiếm</button>
+                <button onClick={handleSearch}><IoSearch /></button>
             </div>
             <div className="product-list">
                 {filteredProducts.length > 0 ? (

@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import "../css/Update.css";
+import { IoSearch } from "react-icons/io5";
 
 const productsList = [
     { id: '1', name: 'Sản phẩm 1', price: '100000', description: 'Mô tả sản phẩm 1', feature: "Đặc điểm nổi bật của sản phẩm 1" },
@@ -26,71 +28,61 @@ function Update() {
     const handleSearchById = async (productId) => {
         setLoading(true);
         setError('');
-        // try {
-        //     const response = await axios.get(`https://api/products/${productId}`);
-        //     setProduct(response.data);
-        // } catch (err) {
-        //     setError('Sản phẩm không tồn tại');
-        //     setProduct(null);
-        // } finally {
-        //     setLoading(false);
-        // }
         setTimeout(() => {
             const foundProduct = productsList.find((prod) => prod.id === productId);
             if (foundProduct) {
                 setProduct(foundProduct);
             } else {
-                setError('Sản phẩm không tồn tại');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Sản phẩm không tồn tại!',
+                });
                 setProduct(null);
             }
             setLoading(false);
-        }, 1000); // Giả lập độ trễ khi tìm kiếm
+        }, 1000); // Simulate search delay
     };
 
     const handleSearchByName = async () => {
         setLoading(true);
         setError('');
-        // try {
-        //     const response = await axios.get(`https://api/products?name=${searchTerm}`);
-        //     setProduct(response.data);
-        // } catch (err) {
-        //     setError('Sản phẩm không tồn tại');
-        //     setProduct(null);
-        // } finally {
-        //     setLoading(false);
-        // }
         setTimeout(() => {
             const foundProduct = productsList.find((prod) => prod.name === searchTerm);
             if (foundProduct) {
                 setProduct(foundProduct);
             } else {
-                setError('Sản phẩm không tồn tại');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Sản phẩm không tồn tại!',
+                });
                 setProduct(null);
             }
             setLoading(false);
-        }, 1000); // Giả lập độ trễ khi tìm kiếm
+        }, 1000); // Simulate search delay
     };
 
     const handleUpdate = async () => {
         setLoading(true);
-        // try {
-        //     await axios.put(`https://api/products/${product.id}`, product);
-        //     alert('Cập nhật sản phẩm thành công');
-        // } catch (err) {
-        //     setError('Có lỗi xảy ra khi cập nhật sản phẩm');
-        // } finally {
-        //     setLoading(false);
-        // }
         setTimeout(() => {
             const updatedProductIndex = productsList.findIndex((prod) => prod.id === product.id);
             if (updatedProductIndex !== -1) {
                 productsList[updatedProductIndex] = { ...product };
-                alert('Cập nhật sản phẩm thành công');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Cập nhật sản phẩm thành công!',
+                });
             } else {
-                setError('Có lỗi xảy ra khi cập nhật sản phẩm');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Có lỗi xảy ra khi cập nhật sản phẩm!',
+                });
             }
             setLoading(false);
-        }, 500); // Giả lập độ trễ khi cập nhật
+        }, 500); // Simulate update delay
     };
 
     const handleChange = (e) => {
@@ -100,7 +92,7 @@ function Update() {
 
     return (
         <div className="update-container content-container">
-            <h2>Cập Nhật Sản Phẩm</h2>
+            <h1>Cập Nhật Sản Phẩm</h1>
             <div className="search-section">
                 <input
                     type="text"
@@ -109,10 +101,9 @@ function Update() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button onClick={handleSearchByName} disabled={loading}>
-                    {loading ? 'Đang tìm...' : 'Tìm kiếm'}
+                    {loading ? 'Đang tìm...' : <IoSearch />}
                 </button>
             </div>
-            {error && <p className="error">{error}</p>}
             {product && (
                 <div className="product-details">
                     <div className="input-group">
