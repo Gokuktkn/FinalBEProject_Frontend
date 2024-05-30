@@ -28,24 +28,70 @@
     border-radius: 4px;
 }
 
-.product-type {
+.product-info .tag-input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.image-upload-section {
+    margin-top: 20px;
+}
+
+.image-upload-section input[type="file"] {
+    display: none;
+}
+
+.image-upload-label {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #1DC483;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-item {
+    position: relative;
+    width: 100px; /* Set fixed width */
+    height: 100px; /* Set fixed height */
+    overflow: hidden; /* Hide overflow */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #f9f9f9; /* Add background color */
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    justify-content: center;
 }
 
-.product-type input {
-    flex: 1;
-    margin-right: 10px;
+.image-item img {
+    max-width: 100%; /* Ensure image fits within container */
+    max-height: 100%; /* Ensure image fits within container */
+    object-fit: cover; /* Scale image to cover container */
 }
 
-.product-type button {
-    padding: 8px 16px;
+.image-item .image-item__btn-wrapper {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
-.add-type-btn {
-    padding: 8px 16px;
-    margin-top: 10px;
+.image-item .image-item__btn-wrapper button {
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .create-submit {
@@ -53,5 +99,17 @@
 }
 
 .submit-btn {
-    padding: 10px 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #1DC483;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.submit-btn:hover {
+    background-color: #17a669;
 }

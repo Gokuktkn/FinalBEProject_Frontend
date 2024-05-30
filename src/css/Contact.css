@@ -17,10 +17,6 @@ textarea {
     padding: 7px 10px;
 }
 
-.contact-info textarea {
-    resize: none;
-}
-
 .submit{
     align-self: center;
 }

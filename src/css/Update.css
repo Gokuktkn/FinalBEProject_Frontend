@@ -24,6 +24,18 @@
   margin-top: 20px;
 }
 
+.product-details button {
+  width: 100%;
+  padding: 10px;
+  background-color: #1DC483;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .input-group {
   margin-bottom: 20px;
 }

@@ -1,63 +1,102 @@
 import React, { useState } from 'react';
-import "../css/Create.css"
+import { WithContext as ReactTags } from 'react-tag-input';
+import Swal from 'sweetalert2';
+import "../css/Create.css";
+
+const KeyCodes = {
+    comma: 188,
+    enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 function Create() {
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
-    const [productTypes, setProductTypes] = useState(['']);
-    const [productImage, setProductImage] = useState('');
+    const [attributes, setAttributes] = useState([{ name: 'Phân loại', tags: [] }]);
+    const [images, setImages] = useState([]);
     const [productDescription, setProductDescription] = useState('');
-    const [productFeatures, setProductFeatures] = useState('');
 
-    const handleTypeChange = (index, value) => {
-        const newProductTypes = [...productTypes];
-        newProductTypes[index] = value;
-        setProductTypes(newProductTypes);
+    const handleDelete = (i, attrIndex) => {
+        const newAttributes = [...attributes];
+        newAttributes[attrIndex].tags = newAttributes[attrIndex].tags.filter((tag, index) => index !== i);
+        setAttributes(newAttributes);
     };
 
-    const addProductType = () => {
-        setProductTypes([...productTypes, '']);
+    const handleAddition = (tag, attrIndex) => {
+        const newAttributes = [...attributes];
+        newAttributes[attrIndex].tags = [...newAttributes[attrIndex].tags, tag];
+        setAttributes(newAttributes);
     };
 
-    const removeProductType = (index) => {
-        const newProductTypes = productTypes.filter((_, i) => i !== index);
-        setProductTypes(newProductTypes);
+    const addAttribute = () => {
+        Swal.fire({
+            title: 'Nhập tên đặc tính',
+            input: 'text',
+            inputPlaceholder: 'Ví dụ: Kích cỡ, Màu sắc',
+            showCancelButton: true,
+            confirmButtonText: 'Thêm',
+            cancelButtonText: 'Hủy',
+            preConfirm: (attributeName) => {
+                if (!attributeName) {
+                    Swal.showValidationMessage('Tên đặc tính không được bỏ trống');
+                } else {
+                    return attributeName;
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setAttributes([...attributes, { name: result.value, tags: [] }]);
+            }
+        });
+    };
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        const newImages = files.map(file => URL.createObjectURL(file));
+        setImages([...images, ...newImages]);
+    };
+
+    const handleImageRemove = (index) => {
+        const newImages = images.filter((_, i) => i !== index);
+        setImages(newImages);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Xử lý gửi dữ liệu
         const newProductData = {
             productName,
             productPrice,
-            productTypes,
-            productImage,
+            attributes,
+            images,
             productDescription,
-            productFeatures,
         };
         console.log(newProductData);
-        // Đặt lại các trường
+        Swal.fire({
+            title: 'Sản phẩm đã được tạo!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
         setProductName('');
         setProductPrice('');
-        setProductTypes(['']);
-        setProductImage('');
+        setAttributes([{ name: 'Phân loại', tags: [] }]);
+        setImages([]);
         setProductDescription('');
-        setProductFeatures('');
     };
 
     return (
-        <div className='create-container content-container'>
-            <h2>Create New Product</h2>
-            <form onSubmit={handleSubmit} className='create-content'>
+        <div className="create-container content-container">
+            <h1>Thêm sản phẩm</h1>
+            <form onSubmit={handleSubmit} className="create-content">
                 <div className="product-info">
-                    <label htmlFor='product-name'>Tên sản phẩm</label>
+                    <label htmlFor="product-name">Tên sản phẩm</label>
                     <input
                         type="text"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
                         required
-                        id='product-name'
-                        className='product-name'
+                        id="product-name"
+                        className="product-name"
                     />
                 </div>
                 <div className="product-info">
@@ -71,36 +110,45 @@ function Create() {
                         required
                     />
                 </div>
-                <div className="product-info">
-                    <label>Phân loại</label>
-                    {productTypes.map((type, index) => (
-                        <div key={index} className="product-type">
-                            <input
-                                type="text"
-                                value={type}
-                                onChange={(e) => handleTypeChange(index, e.target.value)}
-                                required
-                                placeholder="Nhập loại sản phẩm"
-                            />
-                            {index > 0 && (
-                                <button type="button" onClick={() => removeProductType(index)}>
-                                    Bỏ
-                                </button>
-                            )}
-                        </div>
-                    ))}
-                    <button type="button" onClick={addProductType} className="add-type-btn">
-                        Thêm loại
-                    </button>
-                </div>
-                <div className="product-info">
-                    <label>Ảnh sản phẩm</label>
+                {attributes.map((attribute, index) => (
+                    <div key={index} className="product-info">
+                        <label>{attribute.name}</label>
+                        <ReactTags
+                            tags={attribute.tags}
+                            handleDelete={(i) => handleDelete(i, index)}
+                            handleAddition={(tag) => handleAddition(tag, index)}
+                            delimiters={delimiters}
+                            className="tag-input"
+                        />
+                    </div>
+                ))}
+                <button type="button" onClick={addAttribute} className="add-attribute-btn">
+                    Thêm đặc tính
+                </button>
+                <div className="product-info image-upload-section">
+                    <label htmlFor="product-images">Ảnh sản phẩm</label>
                     <input
                         type="file"
-                        onChange={(e) => setProductImage(e.target.files[0])}
+                        id="product-images"
+                        multiple
+                        onChange={handleImageChange}
                         accept="image/*"
-                        className='product-img'
                     />
+                    <label htmlFor="product-images" className="image-upload-label">
+                        Chọn ảnh
+                    </label>
+                    <div className="image-previews">
+                        {images.map((image, index) => (
+                            <div key={index} className="image-item">
+                                <img src={image} alt={`Product Preview ${index + 1}`} />
+                                <div className="image-item__btn-wrapper">
+                                    <button type="button" onClick={() => handleImageRemove(index)}>
+                                        Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="product-info">
                     <label>Mô tả sản phẩm</label>
@@ -109,21 +157,11 @@ function Create() {
                         value={productDescription}
                         onChange={(e) => setProductDescription(e.target.value)}
                         required
-                        className='product-desc product-info'
-                    />
-                </div>
-                <div className="product-info">
-                    <label>Đặc điểm nổi bật của sản phẩm</label>
-                    <textarea
-                        cols={50} rows={10}
-                        value={productFeatures}
-                        onChange={(e) => setProductFeatures(e.target.value)}
-                        required
-                        className='product-feature product-info'
+                        className="product-desc product-info"
                     />
                 </div>
                 <div className="create-submit">
-                    <button type="submit" className='submit-btn'>Tạo sản phẩm</button>
+                    <button type="submit" className="submit-btn">Tạo sản phẩm</button>
                 </div>
             </form>
         </div>
