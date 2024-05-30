@@ -2,11 +2,16 @@ import React, { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { PiSignInBold, PiMagnifyingGlassBold } from "react-icons/pi";
 import { FaUserAlt, FaFacebookMessenger } from "react-icons/fa";
-import { IoMdCart } from "react-icons/io";
+import { IoIosArrowDown, IoMdCart } from "react-icons/io";
 import '../css/Header.scss'
 
 const Header = () => {
   const navigate = useNavigate();
+  localStorage.setItem('user', JSON.stringify({
+    username: 'Lil John',
+    role: 'admin'
+  }))
+  const [user, setUser] = useState(localStorage.getItem('user'))
   const [searchInput, setSearchInput] = useState('');
   const [verify, setVerify] = useState(false)
   const searchInputChange = (e) => {
@@ -23,12 +28,21 @@ const Header = () => {
       navigate(`/search?key=${searchInput}`)
     }
   }
+  console.log(localStorage.getItem('user'), user)
+  const handleSignOut = () => {
+    localStorage.removeItem('refreshToken'),
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('cart')
+    setUser(null)
+    navigate('/')
+  }
   return (
     <div className='header'>
       <div className="header-top">
         <div className="container">
           {
-            !localStorage.getItem('user') ?
+            user == null ?
               <div className="header-top-left">
                 <Link to={'/signin'}>
                   <div className="header-top-left-signin">
@@ -44,7 +58,18 @@ const Header = () => {
                 </Link>
               </div> :
               <div className="header-top-left">
-                <div className="profile"></div>
+                <div className="header-top-left-profile">
+                  <div className="header-top-dropdown">
+                    <Link className="dropbtn">
+                      Tài khoản <IoIosArrowDown className="nav-arrow" />
+                    </Link>
+                    <div className="dropdown-content">
+                      <Link className='nav-dropdown ' to={'/account'}>Tài khoản</Link>
+                      {JSON.parse(user).role == 'admin' ? <Link className='nav-dropdown ' to={'/admin'}>Quản lý</Link> : <Link className='nav-dropdown ' to={'/cart'}>Giỏ hàng</Link>}
+                      <button className='nav-dropdown sigh-out' onClick={handleSignOut}>Đăng xuất</button>
+                    </div>
+                  </div>
+                </div>
                 <Link to={'/cart'}>
                   <div className="header-top-left-cart">
                     <IoMdCart />
