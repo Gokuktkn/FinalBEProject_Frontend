@@ -7,11 +7,13 @@ import '../css/Header.scss'
 
 const Header = () => {
   const navigate = useNavigate();
-  localStorage.setItem('user', JSON.stringify({
-    username: 'Lil John',
-    role: 'admin'
-  }))
-  const [user, setUser] = useState(localStorage.getItem('user'))
+  // test profile
+  // localStorage.setItem('user', JSON.stringify({
+  //   username: 'Lil John',
+  //   role: 'admin',
+  //   profile_picture: "/qua/bo.png",
+  // }))
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
   const [searchInput, setSearchInput] = useState('');
   const [verify, setVerify] = useState(false)
   const searchInputChange = (e) => {
@@ -64,8 +66,12 @@ const Header = () => {
                       Tài khoản <IoIosArrowDown className="nav-arrow" />
                     </Link>
                     <div className="dropdown-content">
+                      <div className="nav-profile">
+                        <img src={user.profile_picture} alt="" className="profile-img" />
+                        <p className="profile-name">{user.username}</p>
+                      </div>
                       <Link className='nav-dropdown ' to={'/account'}>Tài khoản</Link>
-                      {JSON.parse(user).role == 'admin' ? <Link className='nav-dropdown ' to={'/admin'}>Quản lý</Link> : <Link className='nav-dropdown ' to={'/cart'}>Giỏ hàng</Link>}
+                      {user.role == 'admin' ? <Link className='nav-dropdown ' to={'/admin'}>Quản lý</Link> : <Link className='nav-dropdown ' to={'/cart'}>Giỏ hàng</Link>}
                       <button className='nav-dropdown sigh-out' onClick={handleSignOut}>Đăng xuất</button>
                     </div>
                   </div>
