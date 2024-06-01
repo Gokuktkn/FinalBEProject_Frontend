@@ -1,87 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/SignForm.scss';
 import '../css/Auth.css';
 import NavForm from '../components/NavForm';
 import { useNavigate } from 'react-router-dom';
-
-const mockUsers = [
-  { email: 'user1@example.com', password: 'password1' },
-  { email: 'user2@example.com', password: 'password2' }
-];
+import { fetchAPI, fetchIMG } from '../../fetchApi.js';
 
 const SignUp = () => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(localStorage.getItem('user') !== null) {
+      navigate('/')
+    }
+  }, [])
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Validate passwords
-    if (password !== confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp');
-      setLoading(false);
-      return;
+    let formData = new FormData();
+    if(avatar) {
+      formData.append('avatar', avatar, avatar.name)
     }
+    formData.append('email', email)
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('confirmPassword', password)
 
-    // Check password length
-    if (password.length < 8) {
-      setError('Mật khẩu phải có ít nhất 8 ký tự');
-      setLoading(false);
-      return;
-    }
-
-    // Commented out API call
-    // try {
-    //     const formData = new FormData();
-    //     formData.append('name', name);
-    //     formData.append('email', email);
-    //     formData.append('password', password);
-    //     formData.append('avatar', avatar);
-
-    //     const response = await axios.post('https://api.example.com/register', formData);
-    //     if (response.data.success) {
-    //         alert('Đăng ký thành công');
-    //         navigate('/login');
-    //     } else {
-    //         setError('Email đã tồn tại');
-    //     }
-    // } catch (err) {
-    //     setError('Có lỗi xảy ra, vui lòng thử lại');
-    // } finally {
-    //     setLoading(false);
-    // }
-
-    setTimeout(() => {
-      const existingUser = mockUsers.find(user => user.email === email);
-      if (existingUser) {
-        setError('Email đã tồn tại');
+    try {
+      const newUser = await fetchIMG('/user/register', 'POST', formData);
+      if(newUser.status === 201) {
+        localStorage.setItem('user', JSON.stringify(newUser.data.user))
+        navigate(0)
       } else {
-        // api create new user here
-        mockUsers.push({ email, password });
-        localStorage.setItem('user', JSON.stringify(
-          {
-            username: "Little John",
-            role: "user"
-          }
-        ));
-        // api get new user here
-
-        // api create token from new user here
-        localStorage.setItem('token', "somethinghere");
-        localStorage.setItem('refreshToken', "somewherehere");
-        localStorage.removeItem('cart');
-        navigate('/');
+        setError('Đăng ký không thành công');
       }
-      setLoading(false);
-    }, 1000); // Giả lập độ trễ khi đăng ký
+    } catch (err) {
+      setError('Có lỗi xảy ra, vui lòng thử lại');
+    } finally {
+      // TODO: TẠO TOKEN VÀ RT
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('token')
+      localStorage.removeItem('cart');
+      setLoading(false)
+    }
   };
 
   return (
@@ -98,8 +67,8 @@ const SignUp = () => {
               <input
                 type="text"
                 id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
@@ -120,16 +89,6 @@ const SignUp = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
