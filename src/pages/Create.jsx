@@ -172,7 +172,6 @@ const Create = () => {
             multiple
             onChange={handleImageChange}
             accept="image/*"
-            style={{ display: 'none' }}
           />
           <label htmlFor="product-images" className="image-upload-label">
             Chọn ảnh

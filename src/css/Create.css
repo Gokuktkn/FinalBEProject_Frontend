@@ -125,10 +125,7 @@
     font-weight: bold;
 }
 
-.submit-btn:hover {
-    background-color: #17a669;
-}
-
-textarea{
-    resize: none;
+.submit-btn:hover, .image-upload-label:hover {
+    background-color: #17a669 !important;
+    color: #fff !important;
 }

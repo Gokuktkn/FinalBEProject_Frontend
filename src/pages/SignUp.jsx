@@ -15,10 +15,18 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(localStorage.getItem('user') !== null) {
+    if (localStorage.getItem('user') !== null) {
       navigate('/')
     }
   }, [])
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]; // Lấy tệp đầu tiên từ mảng tệp
+    if (file) {
+      const avatarURL = URL.createObjectURL(file); // Tạo URL cho tệp được chọn
+      setAvatar(avatarURL); // Lưu URL vào state
+    }
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -26,7 +34,7 @@ const SignUp = () => {
     setError('');
 
     let formData = new FormData();
-    if(avatar) {
+    if (avatar) {
       formData.append('avatar', avatar, avatar.name)
     }
     formData.append('email', email)
@@ -36,7 +44,7 @@ const SignUp = () => {
 
     try {
       const newUser = await fetchIMG('/user/register', 'POST', formData);
-      if(newUser.status === 201) {
+      if (newUser.status === 201) {
         localStorage.setItem('user', JSON.stringify(newUser.data.user))
         navigate(0)
       } else {
@@ -98,8 +106,15 @@ const SignUp = () => {
                 type="file"
                 id="avatar"
                 accept="image/*"
-                onChange={(e) => setAvatar(e.target.files[0])}
+                onChange={handleImageChange}
               />
+            </div>
+            <div className="image-previews">
+              {avatar && (
+                <div className="image-item avatar-preview">
+                  <img src={avatar} alt={`Avatar Preview`} />
+                </div>
+              )}
             </div>
             {error && <p className="error">{error}</p>}
             <button type="submit" disabled={loading}>
