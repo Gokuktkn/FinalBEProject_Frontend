@@ -39,10 +39,10 @@ function Management() {
 
     const handleSearch = () => {
         if (searchTerm.trim() === '') {
-            setFilteredProducts(products);
+            setFilteredProducts(products); // Nếu không có từ khóa tìm kiếm, hiển thị tất cả sản phẩm
         } else {
-            const results = products.filter(product => product.id === parseInt(searchTerm));
-            setFilteredProducts(results.length > 0 ? results : []);
+            const results = products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredProducts(results.length > 0 ? results : []); // Nếu có kết quả, hiển thị kết quả, nếu không, hiển thị mảng rỗng
         }
     };
 
@@ -82,7 +82,7 @@ function Management() {
             <div className="search-bar">
                 <input
                     type="text"
-                    placeholder="Nhập ID sản phẩm..."
+                    placeholder="Nhập tên sản phẩm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />

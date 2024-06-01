@@ -34,16 +34,23 @@ const SignUp = () => {
     formData.append('password', password)
     formData.append('confirmPassword', password)
 
-    const newUser = await fetchIMG('/user/register', 'POST', formData)
-    if(newUser.status === 201) {
-      localStorage.setItem('user', JSON.stringify(newUser.data.user))
-      navigate(0)
+    try {
+      const newUser = await fetchIMG('/user/register', 'POST', formData);
+      if(newUser.status === 201) {
+        localStorage.setItem('user', JSON.stringify(newUser.data.user))
+        navigate(0)
+      } else {
+        setError('Đăng ký không thành công');
+      }
+    } catch (err) {
+      setError('Có lỗi xảy ra, vui lòng thử lại');
+    } finally {
+      // TODO: TẠO TOKEN VÀ RT
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('token')
+      localStorage.removeItem('cart');
+      setLoading(false)
     }
-    // TODO: TẠO TOKEN VÀ RT
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('token')
-    localStorage.removeItem('cart');
-    setLoading(false)
   };
 
   return (

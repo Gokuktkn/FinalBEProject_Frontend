@@ -78,16 +78,12 @@
     margin-top: 20px;
 }
 
-button {
+.admin-content button {
     padding: 10px 20px;
-    background-color: #1DC483;
-    color: white;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
+.admin-content button:hover {
     background-color: #13a06a;
 }
 
