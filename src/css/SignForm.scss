@@ -17,6 +17,7 @@
                 width: 50%;
                 text-align: center;
                 height: 4rem;
+
                 a {
                     display: block;
                     color: inherit;
@@ -26,11 +27,17 @@
                     color: inherit;
                     font-size: 1.2rem;
                 }
+
                 .active {
                     color: #fff;
                     background: linear-gradient(120deg, #1dc483, #08e638, #1dc483);
                 }
             }
+        }
+
+        .avatar-preview {
+            border-radius: 50%;
+            margin: 0 auto 20px;
         }
     }
 }
