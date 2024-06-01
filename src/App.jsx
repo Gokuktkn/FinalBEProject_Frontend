@@ -15,8 +15,17 @@ import SignIn from './pages/SignIn.jsx'
 import Collections from './pages/Collections.jsx'
 import Cart from './pages/Cart.jsx'
 import Account from './pages/Account.jsx'
+import { fetchAPI } from '../fetchApi.js'
 
 function App() {
+
+  // const response = fetchAPI('/user/register', 'POST', {
+  //   email: "email@example.com",
+  //   username: "username",
+  //   password: "8letters",
+  //   confirmPassword: "8letters"
+  // })
+  // response.then(e => console.log(e))
 
   // let firstTime = true
   const cycleTokenAuth = () => {
@@ -63,7 +72,7 @@ function App() {
         }
       }
     }
-    else if (localStorage.getItem('refreshToken') !=null) {
+    else if (localStorage.getItem('refreshToken') != null) {
       // api kiểm tra refreshToken
 
       if (true) {
@@ -90,16 +99,16 @@ function App() {
     }
     console.log('first')
   }
-  if (localStorage.getItem('token') == null && localStorage.getItem('refreshToken') == null) {
-    localStorage.removeItem('cart')
-    localStorage.removeItem('user')
-  }
-  else {
-    cycleTokenAuth()
-    setInterval(() => {
-      cycleTokenAuth()
-    }, 5 * 10000);
-  }
+  // if (localStorage.getItem('token') == null && localStorage.getItem('refreshToken') == null) {
+  //   localStorage.removeItem('cart')
+  //   localStorage.removeItem('user')
+  // }
+  // else {
+  //   cycleTokenAuth()
+  //   setInterval(() => {
+  //     cycleTokenAuth()
+  //   }, 5 * 10000);
+  // }
 
   return (
     <>

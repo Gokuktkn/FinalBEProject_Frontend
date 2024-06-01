@@ -30,7 +30,6 @@ const Header = () => {
       navigate(`/search?key=${searchInput}`)
     }
   }
-  console.log(localStorage.getItem('user'), user)
   const handleSignOut = () => {
     localStorage.removeItem('refreshToken'),
     localStorage.removeItem('token')
