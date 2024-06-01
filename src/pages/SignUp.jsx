@@ -13,6 +13,7 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,20 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    // Validate passwords
+    if (password !== confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp');
+      setLoading(false);
+      return;
+    }
+
+    // Check password length
+    if (password.length < 8) {
+      setError('Mật khẩu phải có ít nhất 8 ký tự');
+      setLoading(false);
+      return;
+    }
 
     // Commented out API call
     // try {
@@ -105,6 +120,16 @@ const SignUp = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
