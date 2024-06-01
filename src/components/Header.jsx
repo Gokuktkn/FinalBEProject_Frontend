@@ -8,11 +8,11 @@ import '../css/Header.scss'
 const Header = () => {
   const navigate = useNavigate();
   // test profile
-  // localStorage.setItem('user', JSON.stringify({
-  //   username: 'Lil John',
-  //   role: 'admin',
-  //   profile_picture: "/qua/bo.png",
-  // }))
+  localStorage.setItem('user', JSON.stringify({
+    username: 'Lil John',
+    role: 'admin',
+    profile_picture: "/qua/bo.png",
+  }))
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
   const [searchInput, setSearchInput] = useState('');
   const [verify, setVerify] = useState(false)
