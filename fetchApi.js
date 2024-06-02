@@ -7,9 +7,7 @@ export const fetchAPI = async (endpoint, method, bodyData) => {
         },
         body: JSON.stringify(bodyData)
     })
-    const getRes = await fetch('http://localhost:8080/user')
-    const data = response.json();
-    console.log(response)
+    const data = await response.json();
     return data
 }
 export const fetchIMG = async (endpoint, method, bodyData) => {
