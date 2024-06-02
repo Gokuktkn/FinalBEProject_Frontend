@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/SignForm.scss';
 import '../css/Auth.css';
 import NavForm from '../components/NavForm';
@@ -46,9 +46,9 @@ const SignUp = () => {
       if (response.status === 201) {
         localStorage.setItem('user', JSON.stringify(response.data.user))
         localStorage.setItem('token', response.data.token)
-      localStorage.setItem('refreshToken', response.data.refreshToken)  
+        localStorage.setItem('refreshToken', response.data.refreshToken)
         localStorage.removeItem('cart');
-      setLoading(false)
+        setLoading(false)
         navigate(0)
       } else {
         setError('Đăng ký không thành công');
