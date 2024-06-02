@@ -5,13 +5,11 @@ export const fetchAPI = async (endpoint, method, bodyData, token) => {
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token ? "Token " + token : "Token"
+            "Authorization": token ? "Token " + token : ""
         },
         body: JSON.stringify(bodyData)
     })
-    console.log(response)
     const data = await response.json();
-    console.log(data)
     return data
 }
 export const fetchIMG = async (endpoint, method, bodyData, token) => {
@@ -22,6 +20,17 @@ export const fetchIMG = async (endpoint, method, bodyData, token) => {
             "Authorization": token ? "Token " + token : "Token"
         },
         body: bodyData
+    })
+    const data = await response.json();
+    return data
+}
+export const refreshTokenResetter = async (endpoint, method, token) => {
+    const response = await fetch(API_URL + endpoint, {
+        method,
+        mode: "cors",
+        headers: {
+            "Authorization": "Token " + token
+        }
     })
     const data = await response.json();
     return data
