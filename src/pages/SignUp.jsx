@@ -24,7 +24,6 @@ const SignUp = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0]; // Lấy tệp đầu tiên từ mảng tệp
     setAvatar(e.target.files[0])
-    console.log(file)
     if (file && file.type.startsWith('image/')) {
       const avatarURL = URL.createObjectURL(file); // Tạo URL cho tệp được chọn
       setAvatarUrl(avatarURL); // Lưu URL vào state

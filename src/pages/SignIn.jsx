@@ -24,10 +24,12 @@ const SignIn = () => {
         setError('');
 
         try {
+            console.log(email, password)
             const response = await fetchAPI('/user/login', 'POST', {
                 email,
                 password
             })
+            
             if (response.status === 200) {
                 localStorage.setItem('user', JSON.stringify(response.data.user))
                 localStorage.setItem('token', response.data.token)
@@ -47,6 +49,7 @@ const SignIn = () => {
         }
         catch (e) {
             setError('Có lỗi xảy ra, vui lòng thử lại');
+            setLoading(false)
         }
     };
     return (
