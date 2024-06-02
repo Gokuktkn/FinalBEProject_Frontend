@@ -55,9 +55,11 @@ const SignUp = () => {
         navigate(0)
       } else {
         setError('Đăng ký không thành công');
+        setLoading(false)
       }
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại');
+      setLoading(false)
     }
   };
 
