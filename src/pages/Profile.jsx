@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const ProfileUpdate = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [username, setUsername] = useState(user.username)
-  const [avatar, setAvatar] = useState(user.profile_picture)
-  const [file, setFile] = useState(null)
+  const [avatarUrl, setAvatarUrl] = useState(user.profile_picture)
+  const [avatar, setAvatar] = useState(null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -25,10 +25,10 @@ const ProfileUpdate = () => {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    setFile(file)
+    setAvatar(file)
     if (file && file.type.startsWith('image/')) {
       const avatarURL = URL.createObjectURL(file);
-      setAvatar(avatarURL);
+      setAvatarUrl(avatarURL);
     }
   };
 
@@ -41,16 +41,13 @@ const ProfileUpdate = () => {
 
       const formData = new FormData();
       if (file) {
-        formData.append('avatar', file, file.name)
+        formData.append('avatar', avatar, avatar.name)
       }
       formData.append('email', user.email)
       formData.append('username', username)
 
 
-      const response = await fetchIMG('/user/update/profile', 'PUT', {
-        username,
-        profile_picture: file,
-      }, token);
+      const response = await fetchIMG('/user/update/profile', 'PUT', formData, token);
 
 
       if (response.status === 201) {
@@ -93,7 +90,7 @@ const ProfileUpdate = () => {
         </div>
         {avatar && (
           <div className="avatar-preview">
-            <img src={avatar} alt="Avatar Preview" />
+            <img src={avatarUrl} alt="Avatar Preview" />
           </div>
         )}
         {error && <p className="error">{error}</p>}
