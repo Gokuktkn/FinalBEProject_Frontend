@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+  import React, { useEffect, useState } from 'react';
 import '../css/SignForm.scss';
 import '../css/Auth.css';
 import NavForm from '../components/NavForm';
@@ -40,24 +40,21 @@ const SignUp = () => {
     formData.append('email', email)
     formData.append('username', username)
     formData.append('password', password)
-    formData.append('confirmPassword', password)
 
     try {
-      const newUser = await fetchIMG('/user/register', 'POST', formData);
-      if (newUser.status === 201) {
-        localStorage.setItem('user', JSON.stringify(newUser.data.user))
+      const response = await fetchIMG('/user/register', 'POST', formData);
+      if (response.status === 201) {
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        localStorage.setItem('token', response.data.token)
+      localStorage.setItem('refreshToken', response.data.refreshToken)  
+        localStorage.removeItem('cart');
+      setLoading(false)
         navigate(0)
       } else {
         setError('Đăng ký không thành công');
       }
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại');
-    } finally {
-      // TODO: TẠO TOKEN VÀ RT
-      localStorage.removeItem('refreshToken')
-      localStorage.removeItem('token')
-      localStorage.removeItem('cart');
-      setLoading(false)
     }
   };
 
