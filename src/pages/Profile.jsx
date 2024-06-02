@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../css/ProfileUpdate.css';
 import { useNavigate } from 'react-router-dom';
+import { fetchIMG } from '../../fetchApi.js';
 
 const ProfileUpdate = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -36,7 +37,7 @@ const ProfileUpdate = () => {
       const token = localStorage.getItem('token')
 
       const formData = new FormData();
-      if (file) {
+      if (avatar) {
         formData.append('avatar', avatar, avatar.name)
       }
       formData.append('username', username)
@@ -47,6 +48,7 @@ const ProfileUpdate = () => {
 
       if (response.status === 201) {
         localStorage.setItem('user', JSON.stringify(response.data.user))
+        console.log(response.data)
         setLoading(false)
         navigate(0)
       } else {
@@ -54,6 +56,7 @@ const ProfileUpdate = () => {
         setLoading(false)
       }
     } catch (err) {
+      console.log(err)
       setError('Có lỗi xảy ra, vui lòng thử lại');
       setLoading(false)
     }
