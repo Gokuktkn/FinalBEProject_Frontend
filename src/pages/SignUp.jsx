@@ -10,6 +10,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('')
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,9 +23,11 @@ const SignUp = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]; // Lấy tệp đầu tiên từ mảng tệp
-    if (file) {
+    setAvatar(e.target.files[0])
+    console.log(file)
+    if (file && file.type.startsWith('image/')) {
       const avatarURL = URL.createObjectURL(file); // Tạo URL cho tệp được chọn
-      setAvatar(avatarURL); // Lưu URL vào state
+      setAvatarUrl(avatarURL); // Lưu URL vào state
     }
   }
 
@@ -109,7 +112,7 @@ const SignUp = () => {
             <div className="image-previews">
               {avatar && (
                 <div className="image-item avatar-preview">
-                  <img src={avatar} alt={`Avatar Preview`} />
+                  <img src={avatarUrl} alt='Avatar Preview' />
                 </div>
               )}
             </div>

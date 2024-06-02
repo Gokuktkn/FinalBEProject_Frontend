@@ -21,21 +21,6 @@ const SignIn = () => {
         setLoading(true);
         setError('');
 
-        // Commented out API call
-        // try {
-        //     const response = await axios.post('https://api.example.com/login', { email, password });
-        //     if (response.data.success) {
-        //         alert('Đăng nhập thành công');
-        //         navigate('/admin');
-        //     } else {
-        //         setError('Email hoặc mật khẩu không đúng');
-        //     }
-        // } catch (err) {
-        //     setError('Có lỗi xảy ra, vui lòng thử lại');
-        // } finally {
-        //     setLoading(false);
-        // }
-
         setTimeout(() => {
             const user = mockUsers.find(user => user.email === email && user.password === password);
             if (user) {

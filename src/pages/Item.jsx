@@ -173,7 +173,7 @@ const Item = () => {
                 <div className="cart-icon"><FaCartPlus /></div>
                 <div className="cart-text">
                   <div className="top-text">Giỏ hàng</div>
-                  <Link className="bottom-text">0 Sản phẩm</Link>
+                  <Link to={'/cart'} className="bottom-text">0 Sản phẩm</Link>
                 </div>
               </div>
             </div>

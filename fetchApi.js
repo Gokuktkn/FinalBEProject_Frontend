@@ -18,8 +18,6 @@ export const fetchIMG = async (endpoint, method, bodyData) => {
         mode: "cors",
         body: bodyData
     })
-    const getRes = await fetch('http://localhost:8080/user')
-    const data = response.json();
-    console.log(data)
+    const data = await response.json();
     return data
 }

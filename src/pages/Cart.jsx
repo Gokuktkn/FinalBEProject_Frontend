@@ -48,7 +48,7 @@ const Cart = () => {
         <div className="cart-page">
           <div className="container">
             <h1>GIỎ HÀNG</h1>
-            <p className='no-cart-item'>Bạn chưa đăng nhập. Đăng nhập tại <Link to={'/login'}>đây</Link> để mua sắm.</p>
+            <p className='no-cart-item'>Bạn chưa đăng nhập. Đăng nhập tại <Link to={'/signin'}>đây</Link> để mua sắm.</p>
           </div>
         </div>
       </>)

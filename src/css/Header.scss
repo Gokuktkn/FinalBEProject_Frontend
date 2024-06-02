@@ -216,7 +216,8 @@ a.active {
 
         .sigh-out {
             width: 100%;
-            border-radius: 0;
+            border: none;
+            cursor: pointer;
         }
 
         .nav-dropdown:hover {
