@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../css/ProfileUpdate.css';
-
-const mockUser = {
-  name: 'Little John',
-  email: 'user@example.com',
-  avatar: null // Placeholder, initially no avatar
-};
+import { useNavigate } from 'react-router-dom';
 
 const ProfileUpdate = () => {
-  const [user, setUser] = useState(mockUser);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [username, setUsername] = useState(user.username)
+  const [avatarUrl, setAvatarUrl] = useState(user.profile_picture)
+  const [avatar, setAvatar] = useState(null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(!localStorage.getItem('user') || !localStorage.getItem('token')) {
+      navigate('/')
+    }
+  })
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUser({ ...user, avatar: reader.result });
-      };
-      reader.readAsDataURL(file);
+    setAvatar(file)
+    if (file && file.type.startsWith('image/')) {
+      const avatarURL = URL.createObjectURL(file);
+      setAvatarUrl(avatarURL);
     }
   };
 
@@ -33,17 +32,31 @@ const ProfileUpdate = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    try {
+      const token = localStorage.getItem('token')
 
-    // Simulating an API update call
-    setTimeout(() => {
-      setLoading(false);
-      Swal.fire({
-        title: 'Thành công!',
-        text: 'Thông tin cá nhân đã được cập nhật!',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
-    }, 1000); // Giả lập độ trễ khi cập nhật
+      const formData = new FormData();
+      if (file) {
+        formData.append('avatar', avatar, avatar.name)
+      }
+      formData.append('username', username)
+
+
+      const response = await fetchIMG('/user/update/profile', 'PUT', formData, token);
+
+
+      if (response.status === 201) {
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        setLoading(false)
+        navigate(0)
+      } else {
+        setError('Thay đổi không thành công');
+        setLoading(false)
+      }
+    } catch (err) {
+      setError('Có lỗi xảy ra, vui lòng thử lại');
+      setLoading(false)
+    }
   };
 
   return (
@@ -56,19 +69,8 @@ const ProfileUpdate = () => {
             type="text"
             id="name"
             name="name"
-            value={user.name}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={user.email}
-            onChange={handleInputChange}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -81,9 +83,9 @@ const ProfileUpdate = () => {
             onChange={handleAvatarChange}
           />
         </div>
-        {user.avatar && (
+        {avatar && (
           <div className="avatar-preview">
-            <img src={user.avatar} alt="Avatar Preview" />
+            <img src={avatarUrl} alt="Avatar Preview" />
           </div>
         )}
         {error && <p className="error">{error}</p>}
