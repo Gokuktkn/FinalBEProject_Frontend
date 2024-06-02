@@ -4,7 +4,7 @@ import '../css/ProfileUpdate.css';
 import { useNavigate } from 'react-router-dom';
 
 const ProfileUpdate = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const user = JSON.parse(localStorage.getItem('user'));
   const [username, setUsername] = useState(user.username)
   const [avatarUrl, setAvatarUrl] = useState(user.profile_picture)
   const [avatar, setAvatar] = useState(null)
@@ -12,10 +12,6 @@ const ProfileUpdate = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate()
-
-  const handleInputChange = (e) => {
-    setUsername(e.target.value)
-  };
 
   useEffect(() => {
     if(!localStorage.getItem('user') || !localStorage.getItem('token')) {
@@ -43,7 +39,6 @@ const ProfileUpdate = () => {
       if (file) {
         formData.append('avatar', avatar, avatar.name)
       }
-      formData.append('email', user.email)
       formData.append('username', username)
 
 
@@ -74,8 +69,8 @@ const ProfileUpdate = () => {
             type="text"
             id="name"
             name="name"
-            value={user.name}
-            onChange={handleInputChange}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
