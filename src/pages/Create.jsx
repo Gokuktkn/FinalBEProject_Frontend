@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Tag, Tooltip, Upload, message } from 'antd';
+import { Form, Input, Button, Select, Tooltip, Upload, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import "../css/Create.css";
 
+const { Option } = Select;
+
 const Create = () => {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [productType, setProductType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [images, setImages] = useState([]);
   const [productDescription, setProductDescription] = useState('');
@@ -78,6 +82,8 @@ const Create = () => {
     const newProductData = {
       productName,
       productPrice,
+      discount,
+      productType,
       attributes,
       images,
       productDescription,
@@ -90,6 +96,8 @@ const Create = () => {
     });
     setProductName('');
     setProductPrice('');
+    setDiscount('');
+    setProductType('');
     setAttributes([]);
     setImages([]);
     setProductDescription('');
@@ -116,7 +124,32 @@ const Create = () => {
             onChange={(e) => setProductPrice(e.target.value)}
             required
             id="price"
+            type="number"
           />
+        </Form.Item>
+        <Form.Item className="product-info">
+          <label htmlFor="discount">Giảm giá (%)</label>
+          <Input
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+            required
+            id="discount"
+            type="number"
+          />
+        </Form.Item>
+        <Form.Item className="product-info">
+          <label htmlFor="product-type">Loại sản phẩm</label>
+          <Select
+            value={productType}
+            onChange={(value) => setProductType(value)}
+            required
+            id="product-type"
+          >
+            <Option value="Hải sản">Hải sản</Option>
+            <Option value="Rau củ">Rau củ</Option>
+            <Option value="Thịt">Thịt</Option>
+            <Option value="Trái cây">Trái cây</Option>
+          </Select>
         </Form.Item>
         {attributes.map((attribute, index) => (
           <Form.Item key={index} className="product-info">
@@ -200,7 +233,7 @@ const Create = () => {
           />
         </Form.Item>
         <Form.Item className="create-submit">
-          <Button className="submit-btn">
+          <Button type="submit" className="submit-btn">
             Tạo sản phẩm
           </Button>
         </Form.Item>
