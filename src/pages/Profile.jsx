@@ -5,7 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { fetchIMG } from '../../fetchApi.js';
 
 const ProfileUpdate = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(() => {
+    if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
+      navigate('/')
+    }
+  }, [])
+
+  const user = JSON.parse(localStorage.getItem('user')) || {};
   const [username, setUsername] = useState(user.username)
   const [avatarUrl, setAvatarUrl] = useState(user.profile_picture)
   const [avatar, setAvatar] = useState(null)
@@ -14,11 +20,6 @@ const ProfileUpdate = () => {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if(!localStorage.getItem('user') || !localStorage.getItem('token')) {
-      navigate('/')
-    }
-  })
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -50,7 +51,14 @@ const ProfileUpdate = () => {
         localStorage.setItem('user', JSON.stringify(response.data.user))
         console.log(response.data)
         setLoading(false)
-        navigate(0)
+        Swal.fire(
+          {
+            icon: 'success',
+            title: 'Success',
+            text: 'Thay đổi thông tin thành công',
+            timer: 3000
+          }
+        ).then(() => navigate(0))
       } else {
         setError('Thay đổi không thành công');
         setLoading(false)

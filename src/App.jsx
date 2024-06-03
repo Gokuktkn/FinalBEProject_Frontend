@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
 import Contact from './pages/Contact.jsx'
@@ -21,7 +21,6 @@ function App() {
 
   const navigate = useNavigate();
 
-  // let firstTime = true
   const cycleTokenAuth = async () => {
     try {
       const data = await refreshTokenResetter('/token/request', 'POST', localStorage.getItem('refreshToken'))
@@ -29,24 +28,13 @@ function App() {
         localStorage.setItem('user', JSON.stringify(data.data.user))
         localStorage.setItem('token', data.data.token)
         localStorage.setItem('refreshToken', data.data.refreshToken)
-        console.log(data.data)
-      }
-      else if (data.status == 500) {
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('cart')
-        navigate(0)
-      }
-      else if(data.status == 404) {
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('cart')
-        navigate(0)
       }
       else {
-        console.log(data)
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('cart')
+        navigate(0)
       }
     }
     catch (e) {

@@ -30,7 +30,7 @@ const Header = () => {
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('cart')
     setUser(null)
-    navigate('/')
+    navigate(0)
   }
   return (
     <div className='header'>

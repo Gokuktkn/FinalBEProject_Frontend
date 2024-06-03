@@ -33,13 +33,20 @@ function ChangePassword() {
             return;
         }
         try {
-            const data = fetchAPI('/user/update/password', 'PUT', { password: oldPassword, newPassword }, localStorage.getItem('token'))
+            const data = await fetchAPI('/user/update/password', 'PUT', { password: oldPassword, newPassword }, localStorage.getItem('token'))
             if (data.status == 200) {
-                localStorage.setItem('user', data.data.user)
+                localStorage.setItem('user', JSON.stringify(data.data.user))
                 localStorage.setItem('token', data.data.token)
                 localStorage.setItem('refreshToken', data.data.refreshToken)
-                setLoading(false)
-                return navigate('/')
+                setLoading(false)   
+                Swal.fire(
+                    {
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Đổi mật khẩu thành công',
+                        timer: 3000
+                    }
+                ).then(() => navigate(0))
             }
             else if (data.status == 403) {
                 Swal.fire(
