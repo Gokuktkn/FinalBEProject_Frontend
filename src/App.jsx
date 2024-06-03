@@ -29,34 +29,43 @@ function App() {
         localStorage.setItem('user', JSON.stringify(data.data.user))
         localStorage.setItem('token', data.data.token)
         localStorage.setItem('refreshToken', data.data.refreshToken)
-        console.log(data.data.refreshToken)
+        console.log(data.data)
       }
       else if (data.status == 500) {
-        console.log(localStorage.getItem('refreshToken'))
         localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('refreshToken')
         localStorage.removeItem('cart')
         navigate(0)
       }
+      else if(data.status == 404) {
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('cart')
+        navigate(0)
+      }
+      else {
+        console.log(data)
+      }
     }
     catch (e) {
       console.log('failed')
     }
   }
-  setTimeout(() => {
-    if (localStorage.getItem('refreshToken') == null) {
-      localStorage.removeItem('cart')
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-    }
-    else {
+  if (localStorage.getItem('refreshToken') == null) {
+    localStorage.removeItem('cart')
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  }
+  else {
+    setTimeout(() => {
+      cycleTokenAuth();
+    }, 500);
+    setInterval(() => {
       cycleTokenAuth()
-      setInterval(() => {
-        cycleTokenAuth()
-      }, 5 * 1000 - 100);
-    }
-  }, 500);
+    }, 5 * 10000 - 100);
+  }
 
   return (
     <>

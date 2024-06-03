@@ -238,7 +238,7 @@ a.active {
 
 // bottom
 .header-bottom-dropdown {
-    overflow: hidden;
+    z-index: 20;
 
     .dropbtn {
         padding-right: 1rem;
@@ -255,7 +255,6 @@ a.active {
 
         .nav-dropdown {
             background-color: #1dc483;
-            float: none;
             color: inherit;
             padding: 10px 40px 10px 18px;
             text-decoration: none;
