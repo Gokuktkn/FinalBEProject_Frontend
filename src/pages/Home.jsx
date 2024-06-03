@@ -145,7 +145,7 @@ const Home = () => {
     <div className="body">
       <div className="body-top">
         <div className="container">
-          <div className="body-top-left">
+          <div className="body-top-left" style={{zIndex: "-10"}}>
             <BodyTop></BodyTop>
           </div>
           <div className="body-top-right">

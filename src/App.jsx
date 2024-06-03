@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
 import Contact from './pages/Contact.jsx'
@@ -15,101 +15,57 @@ import SignIn from './pages/SignIn.jsx'
 import Collections from './pages/Collections.jsx'
 import Cart from './pages/Cart.jsx'
 import Account from './pages/Account.jsx'
-import { fetchAPI } from '../fetchApi.js'
+import { refreshTokenResetter } from '../fetchApi.js'
 
 function App() {
 
-  // const response = fetchAPI('/user/register', 'POST', {
-  //   email: "email@example.com",
-  //   username: "username",
-  //   password: "8letters",
-  //   confirmPassword: "8letters"
-  // })
-  // response.then(e => console.log(e))
+  const navigate = useNavigate();
 
   // let firstTime = true
-  const cycleTokenAuth = () => {
-    if (localStorage.getItem('token') != null) {
-      // gọi api để lấy thông tin người dùng và check thông tin token
-
-      // nếu token valid
-      if (true) {
-        // tạo refreshToken cùng token mới
-        // lấy thông tin người dùng
-        localStorage.setItem('token', 'newToken')
-        localStorage.setItem('refreshToken', 'newRefreshToken')
-        // localStorage.setItem('user', 'user')
+  const cycleTokenAuth = async () => {
+    try {
+      const data = await refreshTokenResetter('/token/request', 'POST', localStorage.getItem('refreshToken'))
+      if (data.status == 200) {
+        localStorage.setItem('user', JSON.stringify(data.data.user))
+        localStorage.setItem('token', data.data.token)
+        localStorage.setItem('refreshToken', data.data.refreshToken)
+        console.log(data.data)
       }
-      // nếu token invalid
-      else {
-        // lấy refreshToken
-        if (localStorage.getItem('refreshToken')) {
-          // gọi api để kiểm tra thông tin refreshToken
-
-          // nếu refreshToken valid
-          if (true) {
-            // tạo refreshToken cùng token mới
-            // lấy thông tin người dùng
-            localStorage.setItem('token', 'token')
-            localStorage.setItem('refreshToken', 'refreshToken')
-            localStorage.setItem('user', 'user')
-          }
-          else {
-            // xóa hết dữ liệu
-            localStorage.removeItem('cart')
-            localStorage.removeItem('token')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem('user')
-          }
-        }
-        // refreshToken invalid
-        else {
-          // xóa hết dữ liệu
-          localStorage.removeItem('cart')
-          localStorage.removeItem('token')
-          localStorage.removeItem('refreshToken')
-          localStorage.removeItem('user')
-        }
-      }
-    }
-    else if (localStorage.getItem('refreshToken') != null) {
-      // api kiểm tra refreshToken
-
-      if (true) {
-        // tạo refreshToken cùng token mới
-        // lấy thông tin người dùng
-        localStorage.setItem('token', 'token')
-        localStorage.setItem('refreshToken', 'refreshToken')
-        localStorage.setItem('user', 'user')
-      }
-      // token invalid
-      else {
-        // xóa hết dữ liệu
-        localStorage.removeItem('cart')
+      else if (data.status == 500) {
+        localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('refreshToken')
+        localStorage.removeItem('cart')
+        navigate(0)
+      }
+      else if(data.status == 404) {
         localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('cart')
+        navigate(0)
+      }
+      else {
+        console.log(data)
       }
     }
-    else {
-      localStorage.removeItem('cart')
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
-      localStorage.removeItem('user')
+    catch (e) {
+      console.log('failed')
     }
-    console.log('first')
   }
-  // if (localStorage.getItem('token') == null && localStorage.getItem('refreshToken') == null) {
-  //   localStorage.removeItem('cart')
-  //   localStorage.removeItem('user')
-  // }
-  // else {
-  //   cycleTokenAuth()
-  //   setInterval(() => {
-  //     cycleTokenAuth()
-  //   }, 5 * 10000);
-  // }
-  // console.log(localStorage.getItem('refreshToken'))
+  if (localStorage.getItem('refreshToken') == null) {
+    localStorage.removeItem('cart')
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  }
+  else {
+    setTimeout(() => {
+      cycleTokenAuth();
+    }, 500);
+    setInterval(() => {
+      cycleTokenAuth()
+    }, 5 * 10000 - 100);
+  }
 
   return (
     <>

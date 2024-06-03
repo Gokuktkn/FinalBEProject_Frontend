@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import "../css/ChangePassword.css";
+import { fetchAPI } from '../../fetchApi';
 
 function ChangePassword() {
     const [oldPassword, setOldPassword] = useState('');
@@ -9,6 +10,12 @@ function ChangePassword() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
+            navigate('/')
+        }
+    }, [])
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
@@ -21,30 +28,42 @@ function ChangePassword() {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Mật khẩu xác nhận không khớp!',
+                timer: 3000
             });
             return;
         }
-
-        // Simulate API call to change password
-        setTimeout(() => {
-            // Check old password (mock check)
-            if (oldPassword === 'currentPassword') { // Replace with actual current password check
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: 'Thay đổi mật khẩu thành công!',
-                }).then(() => {
-                    navigate('/');
-                });
-            } else {
-                Swal.fire({
+        try {
+            const data = fetchAPI('/user/update/password', 'PUT', { password: oldPassword, newPassword }, localStorage.getItem('token'))
+            if (data.status == 200) {
+                localStorage.setItem('user', data.data.user)
+                localStorage.setItem('token', data.data.token)
+                localStorage.setItem('refreshToken', data.data.refreshToken)
+                setLoading(false)
+                return navigate('/')
+            }
+            else if (data.status == 403) {
+                Swal.fire(
+                    {
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Sai mật khẩu',
+                        timer: 3000
+                    }
+                )
+                setLoading(false)
+                return
+            }
+        }
+        catch(e) {
+            Swal.fire(
+                {
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Mật khẩu cũ không đúng!',
-                });
-            }
-            setLoading(false);
-        }, 1000); // Simulate delay for updating
+                    text: e.message,
+                    timer: 3000
+                }
+            )
+        }
     };
 
     return (

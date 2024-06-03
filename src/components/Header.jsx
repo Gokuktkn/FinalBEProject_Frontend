@@ -118,7 +118,13 @@ const Header = () => {
             <NavLink to={'/about'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>GIỚI THIỆU</NavLink>
           </div>
           <div className="header-bottom-nav header-bottom-dropdown">
-            <NavLink to={'/product/all'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>SẢN PHẨM</NavLink>
+            <NavLink to={'/product/all'} className={({ isActive, isPending }) => isActive ? 'dropbtn active' : isPending ? 'dropbtn pending' : 'dropbtn'}>SẢN PHẨM <IoIosArrowDown className="nav-arrow" /></NavLink>
+            <div className="dropdown-content">
+              <Link className='nav-dropdown' to={'/product/fruits'}>Hoa quả sạch</Link>
+              <Link className='nav-dropdown' to={'/product/vegetables'}>Rau sạch</Link>
+              <Link className='nav-dropdown' to={'/product/meats'}>Thịt sạch</Link>
+              <Link className='nav-dropdown' to={'/product/seafood'}>Hải sản sạch</Link>
+            </div>
           </div>
           <div className="header-bottom-nav">
             <NavLink to={'/news'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>TIN TỨC</NavLink>

@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../css/SignForm.scss'
 import "../css/Auth.css"
 import NavForm from '../components/NavForm'
 import { useNavigate } from 'react-router-dom';
-
-const mockUsers = [
-    { email: 'user1@example.com', password: 'password1' },
-    { email: 'user2@example.com', password: 'password2' }
-];
+import { fetchAPI } from '../../fetchApi';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -16,30 +12,45 @@ const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (localStorage.getItem('user') !== null) {
+            navigate('/')
+        }
+    }, [])
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
 
-        setTimeout(() => {
-            const user = mockUsers.find(user => user.email === email && user.password === password);
-            if (user) {
-                localStorage.setItem('user', JSON.stringify(
-                    {
-                        username: "Little John",
-                        role: "user"
-                    }
-                ))
-                // api call create token here
-                localStorage.setItem('token', "somethinghere")
-                localStorage.setItem('refreshToken', "somewherehere")
-                localStorage.removeItem('cart')
-                navigate('/');
-            } else {
-                setError('Email hoặc mật khẩu không đúng');
+        try {
+            console.log(email, password)
+            const response = await fetchAPI('/user/login', 'POST', {
+                email,
+                password
+            })
+            
+            if (response.status === 200) {
+                localStorage.setItem('user', JSON.stringify(response.data.user))
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('refreshToken', response.data.refreshToken)
+                localStorage.removeItem('cart');
+                setLoading(false)
+                navigate(0)
             }
-            setLoading(false);
-        }, 1000); // Giả lập độ trễ khi đăng nhập
+            else if (response.status === 403) {
+                setError('Sai tài khoản hoặc mật khẩu')
+                setLoading(false)
+            }
+            else {
+                setError('Đăng nhập không thành công');
+                setLoading(false)
+            }
+        }
+        catch (e) {
+            setError('Có lỗi xảy ra, vui lòng thử lại');
+            setLoading(false)
+        }
     };
     return (
         <div className="log-form-container">
