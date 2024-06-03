@@ -21,7 +21,6 @@ function App() {
 
   const navigate = useNavigate();
 
-  let firstTime = true
   const cycleTokenAuth = async () => {
     try {
       const data = await refreshTokenResetter('/token/request', 'POST', localStorage.getItem('refreshToken'))
