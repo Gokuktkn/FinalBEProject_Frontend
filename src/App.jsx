@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
-import { Routes, Route, Navigate, useNavigate, json } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
 import Contact from './pages/Contact.jsx'

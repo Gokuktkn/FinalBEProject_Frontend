@@ -11,11 +11,11 @@ function ChangePassword() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
-    //         navigate('/')
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (!localStorage.getItem('user') || !localStorage.getItem('token')) {
+            navigate('/')
+        }
+    }, [])
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
