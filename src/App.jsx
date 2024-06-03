@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
 import Contact from './pages/Contact.jsx'
@@ -15,28 +15,48 @@ import SignIn from './pages/SignIn.jsx'
 import Collections from './pages/Collections.jsx'
 import Cart from './pages/Cart.jsx'
 import Account from './pages/Account.jsx'
-import { fetchAPI } from '../fetchApi.js'
+import { refreshTokenResetter } from '../fetchApi.js'
 
 function App() {
 
+  const navigate = useNavigate();
+
   // let firstTime = true
-  const cycleTokenAuth = () => {
-    if(localStorage.getItem('refreshToken') == null) {
-      console.log('no refresh token at all')
+  const cycleTokenAuth = async () => {
+    try {
+      const data = await refreshTokenResetter('/token/request', 'POST', localStorage.getItem('refreshToken'))
+      if (data.status == 200) {
+        localStorage.setItem('user', JSON.stringify(data.data.user))
+        localStorage.setItem('token', data.data.token)
+        localStorage.setItem('refreshToken', data.data.refreshToken)
+        console.log(data.data.refreshToken)
+      }
+      else if (data.status == 500) {
+        console.log(localStorage.getItem('refreshToken'))
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('cart')
+        navigate(0)
+      }
     }
-    console.log('first')
+    catch (e) {
+      console.log('failed')
+    }
   }
-  if (localStorage.getItem('refreshToken') == null) {
-    localStorage.removeItem('cart')
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
-  else {
-    cycleTokenAuth()
-    setInterval(() => {
+  setTimeout(() => {
+    if (localStorage.getItem('refreshToken') == null) {
+      localStorage.removeItem('cart')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+    else {
       cycleTokenAuth()
-    }, 5 * 10000);
-  }
+      setInterval(() => {
+        cycleTokenAuth()
+      }, 5 * 1000 - 100);
+    }
+  }, 500);
 
   return (
     <>
