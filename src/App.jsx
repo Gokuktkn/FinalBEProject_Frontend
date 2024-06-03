@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
@@ -25,12 +25,14 @@ function App() {
   const cycleTokenAuth = async () => {
     try {
       const data = await refreshTokenResetter('/token/request', 'POST', localStorage.getItem('refreshToken'))
-      if(data.status == 200) {
+      if (data.status == 200) {
         localStorage.setItem('user', JSON.stringify(data.data.user))
         localStorage.setItem('token', data.data.token)
         localStorage.setItem('refreshToken', data.data.refreshToken)
+        console.log(data.data.refreshToken)
       }
       else if (data.status == 500) {
+        console.log(localStorage.getItem('refreshToken'))
         localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('refreshToken')
@@ -42,17 +44,19 @@ function App() {
       console.log('failed')
     }
   }
-  if (localStorage.getItem('refreshToken') == null) {
-    localStorage.removeItem('cart')
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
-  else {
-    cycleTokenAuth()
-    setInterval(() => {
+  setTimeout(() => {
+    if (localStorage.getItem('refreshToken') == null) {
+      localStorage.removeItem('cart')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+    else {
       cycleTokenAuth()
-    }, 5 * 10000 - 100);
-  }
+      setInterval(() => {
+        cycleTokenAuth()
+      }, 5 * 1000 - 100);
+    }
+  }, 500);
 
   return (
     <>
