@@ -103,7 +103,7 @@ const Header = () => {
         </div>
         <div className="header-middle-search">
           <form className='header-middle-search-form'>
-            <label className='error' style={{ color: 'red', fontWeight: '700', display: verify ? 'block' : 'none' }}>Thanh nhập không được để trống</label>
+            <label className='error' style={{ color: 'red', fontWeight: '700', background: '#ffffff4f', width: '20%', borderRadius: '7px', border: '2px solid gold', margin: '0 auto 10px', display: verify ? 'block' : 'none' }}>Thanh nhập không được để trống</label>
             <input className='header-middle-search-form-input' type="text" onChange={(e) => searchInputChange(e)} value={searchInput} placeholder='Từ khóa tìm kiếm' />
             <button className='header-middle-search-form-button' type='submit' onClick={(e) => handleSubmit(e)}><PiMagnifyingGlassBold /></button>
           </form>
@@ -118,12 +118,12 @@ const Header = () => {
             <NavLink to={'/about'} className={({ isActive, isPending }) => isActive ? 'active' : isPending ? 'pending' : ''}>GIỚI THIỆU</NavLink>
           </div>
           <div className="header-bottom-nav header-bottom-dropdown">
-            <NavLink to={'/product/all'} className={({ isActive, isPending }) => isActive ? 'dropbtn active' : isPending ? 'dropbtn pending' : 'dropbtn'}>SẢN PHẨM <IoIosArrowDown className="nav-arrow" /></NavLink>
+            <NavLink to={'/product/productsCategory/all'} className={({ isActive, isPending }) => isActive ? 'dropbtn active' : isPending ? 'dropbtn pending' : 'dropbtn'}>SẢN PHẨM <IoIosArrowDown className="nav-arrow" /></NavLink>
             <div className="dropdown-content">
-              <Link className='nav-dropdown' to={'/product/fruits'}>Hoa quả sạch</Link>
-              <Link className='nav-dropdown' to={'/product/vegetables'}>Rau sạch</Link>
-              <Link className='nav-dropdown' to={'/product/meats'}>Thịt sạch</Link>
-              <Link className='nav-dropdown' to={'/product/seafood'}>Hải sản sạch</Link>
+              <Link className='nav-dropdown' to={'/product/productsCategory/fruits'}>Hoa quả sạch</Link>
+              <Link className='nav-dropdown' to={'/product/productsCategory/vegetables'}>Rau sạch</Link>
+              <Link className='nav-dropdown' to={'/product/productsCategory/meats'}>Thịt sạch</Link>
+              <Link className='nav-dropdown' to={'/product/productsCategory/seafood'}>Hải sản sạch</Link>
             </div>
           </div>
           <div className="header-bottom-nav">

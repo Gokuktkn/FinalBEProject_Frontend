@@ -12,10 +12,10 @@ import Search from './pages/Search.jsx'
 import About from './pages/About.jsx'
 import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn.jsx'
-import Collections from './pages/Collections.jsx'
 import Cart from './pages/Cart.jsx'
 import Account from './pages/Account.jsx'
 import { refreshTokenResetter } from '../fetchApi.js'
+import ProductPage from './pages/ProductPage.jsx'
 
 function App() {
 
@@ -64,7 +64,7 @@ function App() {
         <Route path='/admin/*' element={<Admin />}></Route>
         <Route path='/account/*' element={<Account />}></Route>
         <Route path='/product/:id' element={<Item />}></Route>
-        <Route path='/product/all' element={<Collections />}></Route>
+        <Route path="/product/productsCategory/:category" element={<ProductPage />} />
         <Route path='/search' element={<Search />}></Route>
         <Route path='/cart' element={<Cart />}></Route>
         <Route path='/about' element={<About />}></Route>
