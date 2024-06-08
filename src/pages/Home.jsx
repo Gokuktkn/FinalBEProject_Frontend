@@ -1,9 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../css/Home.scss'
 import BodyTop from '../components/BodyTop'
 // import Swiper core and required modules
 import { Autoplay } from 'swiper/modules';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -19,6 +19,7 @@ import ItemMiddle from '../components/ItemMiddle';
 import { FaBasketShopping } from 'react-icons/fa6';
 import ItemBottom from '../components/ItemBottom';
 import Rating from '../components/Rating';
+import { fetchAPI } from '../../fetchApi';
 
 const Home = () => {
   const swiperRef1 = useRef(null)
@@ -26,9 +27,29 @@ const Home = () => {
   const swiperRef3 = useRef(null)
   const swiperRef4 = useRef(null)
 
+  const [fruits, setFruits] = useState([])
+  const [vegetables, setVegetables] = useState([])
+  const [meats, setMeats] = useState([])
+  const [seafood, setSeafood] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  
-  
+  useEffect(() => {
+    fetchAPI('/item/get-type/fruits', 'GET').then(e => setFruits(e.data.items))
+    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setVegetables(e.data.items))
+    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setMeats(e.data.items))
+    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setSeafood(e.data.items))
+    const timeout = setTimeout(() => {
+      setLoading(false)
+    }, 1000);
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
+  console.log(fruits, loading)
+
+
+
+
   // TEST CODE
   // danh gia khach hang
   const rating = [
@@ -89,64 +110,14 @@ const Home = () => {
       feedback: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem quidem exercitationem voluptatibus tempore sint nihil, soluta omnis repudiandae dolore delectus, repellat reprehenderit ipsam nostrum animi explicabo deleniti aliquam, nulla voluptatum!"
     },
   ]
-  const itemBottom = [
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    }
-  ]
   // END TEST CODE
 
-  return (
+  return (loading ? (<div>Loading</div>) : (
     <div className="body">
       <div className="body-top">
         <div className="container">
-          <div className="body-top-left" style={{zIndex: "-10"}}>
-            <BodyTop></BodyTop>
+          <div className="body-top-left">
+            <BodyTop props={fruits[0]}></BodyTop>
           </div>
           <div className="body-top-right">
             <h2 className='body-top-right-header'>SẢN PHẨM BÁN CHẠY</h2>
@@ -166,13 +137,13 @@ const Home = () => {
                   onSwiper={(swiper) => { swiperRef1.current = swiper; }}
                 >
                   <SwiperSlide>
-                    <ItemTop props={itemBottom[0]} />
+                    <ItemTop props={fruits[1]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemTop props={itemBottom[1]} />
+                    <ItemTop props={fruits[2]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemTop props={itemBottom[2]} />
+                    <ItemTop props={fruits[3]} />
                   </SwiperSlide>
                 </Swiper>
 
@@ -220,7 +191,7 @@ const Home = () => {
               <div className="body-middle-top-left-content">
                 <h3 style={{ fontWeight: "600", borderBottom: ".5px solid #e6e6e6", paddingBottom: ".5rem" }}>SẢN PHẨM MỚI</h3>
                 <div className="body-middle-top-left-content-new">
-                  {itemBottom.map((e, i) => <ItemMiddle key={i} props={e} />)}
+                  {fruits.map((e, i) => <ItemMiddle key={i} props={e} />)}
                 </div>
                 <div className="st-border"></div>
                 <div className="body-middle-top-left-content-discount">
@@ -238,22 +209,22 @@ const Home = () => {
                         onSwiper={(swiper) => { swiperRef2.current = swiper; }}
                       >
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[0]} />
+                          <ItemMiddle props={fruits[0]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[1]} />
+                          <ItemMiddle props={fruits[1]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[2]} />
+                          <ItemMiddle props={fruits[2]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[3]} />
+                          <ItemMiddle props={fruits[3]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[4]} />
+                          <ItemMiddle props={fruits[4]} />
                         </SwiperSlide>
                         <SwiperSlide>
-                          <ItemMiddle props={itemBottom[5]} />
+                          <ItemMiddle props={fruits[5]} />
                         </SwiperSlide>
                       </Swiper>
                       <div className="btn-controls">
@@ -322,22 +293,22 @@ const Home = () => {
                   onSwiper={(swiper) => { swiperRef3.current = swiper; }}
                 >
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[0]} />
+                    <ItemBottom props={fruits[0]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[1]} />
+                    <ItemBottom props={fruits[1]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[2]} />
+                    <ItemBottom props={fruits[2]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[3]} />
+                    <ItemBottom props={fruits[3]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[4]} />
+                    <ItemBottom props={fruits[4]} />
                   </SwiperSlide>
                   <SwiperSlide>
-                    <ItemBottom props={itemBottom[5]} />
+                    <ItemBottom props={fruits[5]} />
                   </SwiperSlide>
                 </Swiper>
                 <div className="btn-controls">
@@ -398,7 +369,7 @@ const Home = () => {
         </div>
       </div>
     </div >
-  )
+  ))
 }
 
 export default Home

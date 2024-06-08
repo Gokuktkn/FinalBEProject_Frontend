@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom'
 import { IoMdCart } from 'react-icons/io'
 import '../css/BodyTop.scss'
 
-const BodyTop = () => {
+const BodyTop = ({ props }) => {
+    const formattedNumber = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
     const [itemInfo, setItemInfo] = useState(false)
+    console.log(props)
     return (
         <>
-            <Link to={`/product/bo`} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }}>
+            <Link to={`/product/${props.itemName}`} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }} style={{background: `url(${props.images[0]})`}}>
 
                 <div className="info" style={!itemInfo ? {
                     visibility: "hidden",
@@ -17,12 +21,12 @@ const BodyTop = () => {
                     opacity: "1"
                 }}>
                     <div className="info-name">
-                        <h2>Bơ vỏ sần</h2>
+                        <h2>{props.itemName}</h2>
                     </div>
                     <div className="info-prices">
-                        <div className="info-price"><h1>20.000đ</h1></div>
+                        <div className="info-price"><h1>{formattedNumber(props.price)}đ</h1></div>
                         <div className="info-discount">
-                            <del>45.000đ</del>
+                            <del>{formattedNumber(props.discount)}đ</del>
                         </div>
                     </div>
                     <div className='info-button'>
