@@ -20,6 +20,7 @@ import { FaBasketShopping } from 'react-icons/fa6';
 import ItemBottom from '../components/ItemBottom';
 import Rating from '../components/Rating';
 import { fetchAPI } from '../../fetchApi';
+import { PuffLoader } from 'react-spinners';
 
 const Home = () => {
   const swiperRef1 = useRef(null)
@@ -34,7 +35,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchAPI('/item/get-type/fruits', 'GET').then(e => setFruits(e.data.items))
+    fetchAPI('/item/get-type/fruits/1', 'GET').then(e => setFruits(e.data.items))
     // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setVegetables(e.data.items))
     // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setMeats(e.data.items))
     // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setSeafood(e.data.items))
@@ -112,7 +113,17 @@ const Home = () => {
   ]
   // END TEST CODE
 
-  return (loading ? (<div>Loading</div>) : (
+  let temp = []
+  for(let i = 0; i < 6; i++) {
+    temp.push(fruits[i])
+  }
+
+  return (loading ? (<div style={{
+    margin: "120px 0",
+    marginLeft: "50%",
+  }}>
+    <PuffLoader color="#1dc483"/>
+  </div>) : (
     <div className="body">
       <div className="body-top">
         <div className="container">
@@ -191,7 +202,8 @@ const Home = () => {
               <div className="body-middle-top-left-content">
                 <h3 style={{ fontWeight: "600", borderBottom: ".5px solid #e6e6e6", paddingBottom: ".5rem" }}>SẢN PHẨM MỚI</h3>
                 <div className="body-middle-top-left-content-new">
-                  {fruits.map((e, i) => <ItemMiddle key={i} props={e} />)}
+                  {temp.map((e, i) => <ItemMiddle key={i} props={e} />)}
+                  
                 </div>
                 <div className="st-border"></div>
                 <div className="body-middle-top-left-content-discount">
