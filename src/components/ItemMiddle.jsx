@@ -14,7 +14,7 @@ const ItemMiddle = ({ props }) => {
                     <p>-${Math.ceil(props.discount / props.price)}%</p>
                     <FaStar />
                 </div>
-                <img src={props.img[0]} alt="" />
+                <img src={props.images[0]} alt="" />
                 <div className="description">
                     <h2>{props.itemName}</h2>
                     <strong><i>Giá: </i>{formattedNumber(props.price)}đ</strong><br></br>
