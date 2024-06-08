@@ -6,6 +6,21 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.update-frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    background: #77777777;
+    padding: 20px;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 8px;
+}
+
 .search-bar {
     display: flex;
     align-items: center;
@@ -57,11 +72,15 @@
 }
 
 .product-list .icon-button {
-    background: none;
     border: none;
     cursor: pointer;
     font-size: 1.2em;
     margin: 0 5px;
+}
+
+.product-list .icon-button:hover{
+    background: #fff;
+    border-bottom: 1px solid #17a669;
 }
 
 .action-buttons {

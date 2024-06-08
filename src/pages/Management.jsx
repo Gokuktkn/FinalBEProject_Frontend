@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import "../css/Management.css";
 import ManagementItems from '../components/ManagementItems';
 import { IoSearch } from "react-icons/io5";
+import UpdateProductForm from '../components/UpdateProductForm';
 
 const dummyProducts = [
     { id: 1, name: 'Sản phẩm 1', image: 'https://via.placeholder.com/150', price: 100000 },
@@ -17,6 +18,7 @@ function Management() {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -76,6 +78,19 @@ function Management() {
         });
     };
 
+    const handleEdit = (product) => {
+        setSelectedProduct(product);
+    };
+
+    const handleUpdateProduct = (updatedProduct) => {
+        setProducts(products.map(product => product.id === updatedProduct.id ? updatedProduct : product));
+        setFilteredProducts(filteredProducts.map(product => product.id === updatedProduct.id ? updatedProduct : product));
+    };
+
+    const handleCloseFrame = () => {
+        setSelectedProduct(null);
+    }
+
     return (
         <div className="product-management content-container">
             <h1>Quản lý sản phẩm</h1>
@@ -102,7 +117,7 @@ function Management() {
                         </thead>
                         <tbody>
                             {filteredProducts.map(product => (
-                                <ManagementItems key={product.id} product={product} onDelete={handleDelete} />
+                                <ManagementItems key={product.id} product={product} onDelete={handleDelete} onEdit={handleEdit} />
                             ))}
                         </tbody>
                     </table>
@@ -110,6 +125,11 @@ function Management() {
                     <p>Không tìm thấy sản phẩm</p>
                 )}
             </div>
+            {selectedProduct && (
+                <div className='update-frame'>
+                    <UpdateProductForm product={selectedProduct} onUpdate={handleUpdateProduct} onClose={handleCloseFrame} />
+                </div>
+            )}
         </div>
     );
 }

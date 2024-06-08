@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import HeaderAlt from './components/HeaderAlt.jsx'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
 import Contact from './pages/Contact.jsx'
@@ -20,6 +21,7 @@ import ProductPage from './pages/ProductPage.jsx'
 function App() {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const cycleTokenAuth = async () => {
     try {
@@ -28,25 +30,23 @@ function App() {
         localStorage.setItem('user', JSON.stringify(data.data.user))
         localStorage.setItem('token', data.data.token)
         localStorage.setItem('refreshToken', data.data.refreshToken)
-      }
-      else {
+      } else {
         localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('refreshToken')
         localStorage.removeItem('cart')
         navigate(0)
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.log('failed')
     }
   }
+
   if (localStorage.getItem('refreshToken') == null) {
     localStorage.removeItem('cart')
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-  }
-  else {
+  } else {
     setTimeout(() => {
       cycleTokenAuth();
     }, 500);
@@ -57,8 +57,10 @@ function App() {
 
   return (
     <>
-      <Header></Header>
+      {(location.pathname === '/signin' || location.pathname === '/signup') ? <HeaderAlt /> : <Header />}
       <Routes>
+        <Route path='/signup' element={<SignUp />}></Route>
+        <Route path='/signin' element={<SignIn />}></Route>
         <Route path='/' element={<Home />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/admin/*' element={<Admin />}></Route>
@@ -68,8 +70,6 @@ function App() {
         <Route path='/search' element={<Search />}></Route>
         <Route path='/cart' element={<Cart />}></Route>
         <Route path='/about' element={<About />}></Route>
-        <Route path='/signup' element={<SignUp />}></Route>
-        <Route path='/signin' element={<SignIn />}></Route>
         <Route path='*' element={<NotFound />}></Route>
       </Routes>
       <Footer></Footer>
