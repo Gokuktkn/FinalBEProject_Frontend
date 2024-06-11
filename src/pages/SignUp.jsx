@@ -9,56 +9,55 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem('user') !== null) {
-      navigate('/')
+      navigate('/');
     }
-  }, [])
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]; // Lấy tệp đầu tiên từ mảng tệp
-    setAvatar(e.target.files[0])
-    if (file && file.type.startsWith('image/')) {
-      const avatarURL = URL.createObjectURL(file); // Tạo URL cho tệp được chọn
-      setAvatarUrl(avatarURL); // Lưu URL vào state
-    }
-  }
+  }, [navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    let formData = new FormData();
-    if (avatar) {
-      formData.append('avatar', avatar, avatar.name)
+    if (password.length < 8) {
+      setError('Mật khẩu phải có ít nhất 8 ký tự');
+      setLoading(false);
+      return;
     }
-    formData.append('email', email)
-    formData.append('username', username)
-    formData.append('password', password)
+
+    if (password !== confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp');
+      setLoading(false);
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append('email', email);
+    formData.append('username', username);
+    formData.append('password', password);
 
     try {
       const response = await fetchIMG('/user/register', 'POST', formData);
       if (response.status === 201) {
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('refreshToken', response.data.refreshToken)
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.removeItem('cart');
-        setLoading(false)
-        navigate(0)
+        setLoading(false);
+        navigate(0);
       } else {
         setError('Đăng ký không thành công');
-        setLoading(false)
+        setLoading(false);
       }
     } catch (err) {
       setError('Có lỗi xảy ra, vui lòng thử lại');
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -102,20 +101,14 @@ const SignUp = () => {
               />
             </div>
             <div className="input-group">
-              <label htmlFor="avatar">Avatar</label>
+              <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
               <input
-                type="file"
-                id="avatar"
-                accept="image/*"
-                onChange={handleImageChange}
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
-            </div>
-            <div className="image-previews">
-              {avatar && (
-                <div className="image-item avatar-preview">
-                  <img src={avatarUrl} alt='Avatar Preview' />
-                </div>
-              )}
             </div>
             {error && <p className="error">{error}</p>}
             <button type="submit" disabled={loading}>
