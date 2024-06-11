@@ -101,7 +101,7 @@ const Search = () => {
         "/qua/chuoi.png"
       ]
     },
-    
+
   ]
 
 
@@ -111,27 +111,30 @@ const Search = () => {
 
 
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState([])
+  const [data, setData] = useState()
 
-  useEffect(() =>{
-    fetchAPI(`/search-item/${query}`, 'GET').then(e => console.log(e))
-  }, [])
+  useEffect(() => {
+    setLoading(true)
+    fetchAPI(`/item/search-item/${query}`, 'GET').then(e => {
+      if (e.status === 200) {
+        let finalArray = []
 
+        for (let i = 0; i < e.data.items.length; i += 8) {
+          finalArray.push(e.data.items.slice(i, i + 8));
+        }
 
-  // START TEST CODE
-
-  // TODO: array is API ITEMS GOT CALLED
-  // let array = []
-  let finalArray = []
-
-  for (let i = 0; i < array.length; i += 8) {
-    finalArray.push(array.slice(i, i + 8));
-  }
-
-  console.log(finalArray.length, array.length)
-
-
-  // END TEST CODE
+        setData(finalArray)
+      }
+      else if (e.status === 404) {
+        setData(false)
+      }
+      else {
+        console.log(e)
+      }
+      setLoading(false)
+    })
+  }, [query])
+  console.log(data)
 
 
 
@@ -148,14 +151,16 @@ const Search = () => {
     // array length === 0
     loading ? (<>
       <PuffLoader color='#1dc483' className='loader' />
-    </>) : (<div className='search-container'>
+    </>) : !data ? (<div>
+      Không có kết quả
+    </div>) : (<div className='search-container'>
       <div className="pagination">
         <ThemeProvider theme={theme}>
-          <Pagination count={Math.ceil(array.length / 8)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
+          <Pagination count={Math.ceil(data.length / 8)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
         </ThemeProvider>
       </div>
       <div className="results">
-        {finalArray[page - 1].map((e, i) => (
+        {data[page - 1].map((e, i) => (
           <SearchItem key={i} props={e} />
         ))}
       </div>

@@ -18,11 +18,11 @@ const SearchItem = ({ props }) => {
     <Link to={`/product/${props.ID}`} className='redirect-btn'>
       <div className='item'>
         <div className="discount-percentage">
-          <p>-{Math.ceil(props.discount / props.price)}%;</p>
+          <p>-{Math.ceil(props.discount / props.price)}%</p>
           <FaStar />
         </div>
         <div className="top-img">
-          <img src={props.img[0]} alt="" />
+          <img src={props.images[0]} alt="" />
         </div>
         <div className="price-tags">
           <p className='name-tag'>{props.itemName}</p>
