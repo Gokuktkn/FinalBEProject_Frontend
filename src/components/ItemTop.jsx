@@ -8,7 +8,7 @@ const ItemTop = ({ props }) => {
     }
     return (
         <>
-            <Link to={`/product/${props.itemName}`} className='link-product-cart' >
+            <Link to={`/product/${props.ID}`} className='link-product-cart' >
                 <img src={props.images[0]} alt="" />
                 <div className="description">
                     <h2>{props.itemName}</h2>

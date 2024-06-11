@@ -21,7 +21,7 @@ const Header = () => {
     }
     else {
       setVerify(false)
-      navigate(`/search?key=${searchInput}`)
+      navigate(`/search?q=${searchInput}`)
     }
   }
   const handleSignOut = () => {

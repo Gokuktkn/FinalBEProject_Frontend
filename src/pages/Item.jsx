@@ -2,21 +2,47 @@ import React, { useEffect, useState } from 'react'
 import '../css/Item.scss'
 import { FaCartPlus, FaGift, FaPhoneSquareAlt, FaTruck } from 'react-icons/fa';
 import { LiaLongArrowAltLeftSolid, LiaLongArrowAltRightSolid } from 'react-icons/lia';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaBasketShopping, FaCartShopping } from 'react-icons/fa6';
 import RecommendItem from '../components/RecommendItem';
-import axios from 'axios'
 import Type from '../components/Type';
+import { fetchAPI } from '../../fetchApi';
+import { PuffLoader } from 'react-spinners';
 
 const Item = () => {
+  const params = new useParams();
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
+  const [data, setData] = useState();
+  const [ads, setAds] = useState();
   const [quantity, setQuantity] = useState(1);
   const [img, setImg] = useState();
-  const images = ["/qua/bo.png", "/qua/chuoi.png", "/qua/bo.png", "/qua/chuoi.png", "/qua/chuoi.png", "/qua/chuoi.png"]
+  const [itemList, setItemList] = useState([]);
+
+
   const handleImage = (e) => {
     setImg(e.target.src)
   }
 
+  useEffect(() => {
+    fetchAPI(`/item/get-item/${params.id}`, 'GET').then(e => {
+      if (e.status == 200) {
+        setData(e.data.item)
+        setItemList(e.data.item.variants.map(type => ({ name: type.name, tag: type.type[0] })))
+        fetchAPI(`/item/get-type/${e.data.item.food_type}/1`)
+          .then(e => setAds(e.data.items.slice(0, 4)))
+      }
+      else {
+        setData(false)
+      }
+    })
+    const timeout = setTimeout(() => {
+      setLoading(false)
+    }, 500);
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [])
 
   const formattedNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -25,10 +51,6 @@ const Item = () => {
 
 
   // SUBMIT
-  const [itemList, setItemList] = useState([]);
-  useEffect(() => {
-    setItemList(types.map(type => ({ name: type.name, tag: type.tags[0] })));
-  }, [])
 
   const handleType = (name, tag) => {
     const index = itemList.findIndex(item => item.name === name);
@@ -48,14 +70,15 @@ const Item = () => {
     }
     else {
       const saveItem = {
-        itemName: "aaa",
-        image: "/qua/bo.png",
+        itemName: data.itemName,
+        image: data.images[0],
         quantity,
-        originalPrice: 10000,
+        originalPrice: data.price,
         price: price * quantity,
         type: [
           ...itemList
-        ]
+        ],
+        ID: data.ID
       }
       const existingCart = JSON.parse(localStorage.getItem('cart')) || []
       const existingItemIndex = existingCart.findIndex(e => e.itemName == saveItem.itemName)
@@ -84,75 +107,41 @@ const Item = () => {
       .replace(/\[u\]/g, "<u>")
       .replace(/\[\/u\]/g, "</u>")
       .replace(regexURL, "<a href='$1'>$2</a>")
-      .replace(regexIMG, "<img src='$1' style='margin-left: auto;display: block;transform: translateX(-50%)'>");
+      .replace(regexIMG, "<img src='$1' style='margin-left: auto;display: block;transform: translateX(-50%);max-width: 480px'>");
   }
 
 
   // test codes start here
-  const types = [
-    {
-      name: "loại",
-      tags: ["loại 1", "loại 2", "loại 3"]
-    },
-    {
-      name: "kich co",
-      tags: ["kich co 1", "kich co 2", "kich co 3"]
-    },
-    {
-      name: "dag",
-      tags: ["loại 1", "loại 2", "loại 3"]
-    },
-    {
-      name: "afsffassfo",
-      tags: ["kich co 1", "kich co 2", "kich co 3"]
-    }
-  ]
-
-
-
-
-
-  const [result, setResult] = useState("")
-  axios.post("https://api.vndb.org/kana/vn",
-    {
-      filters: ["id", "=", "11"],
-      fields: "description"
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Token himo-ytq7i-nyyj1-jb8y-goonj-e7at4-6you"
-      }
-    }).then(e => {
-      setResult(e.data.results[0].description)
-      // console.log(result)
-    })
-
   // test codes end here
 
 
-  return (
+  return loading ? (<div style={{
+    margin: "120px 0",
+    marginLeft: "50%",
+  }}>
+    <PuffLoader color="#1dc483" />
+  </div>) : !data ? navigate('/not-found') : (
     <>
       <div className="top-item">
         <div className="container">
           <div className="top-item-col1">
-            <img src={img || images[0]} alt="" className='big-img' />
+            <img src={img || data.images[0]} alt="" className='big-img' />
             <div className="imgs">
-              {images.map((e, i) => (
+              {data.images.map((e, i) => (
                 <img key={i} src={e} alt="" className="small-img" onClick={handleImage} />
               ))}
             </div>
           </div>
           <div className="top-item-col2">
-            <h1>Chuối tiêu</h1>
+            <h1>{data.itemName}</h1>
             <div className="prices">
               <div className="price">
-                <h1>{formattedNumber(25000)}₫</h1>
+                <h1>{formattedNumber(data.price)}₫</h1>
               </div>
               <div className="discount">
                 <del>
                   <i>
-                    {formattedNumber(60000)}₫
+                    {formattedNumber(data.discount)}₫
                   </i>
                 </del>
               </div>
@@ -188,7 +177,7 @@ const Item = () => {
                 </div>
               </div>
               <div className="types">
-                {types.map((e, i) => (
+                {data.variants.map((e, i) => (
                   <Type props={e} key={i} onChange={handleType} />
                 ))}
               </div>
@@ -202,17 +191,7 @@ const Item = () => {
             <h3>ĐẶC ĐIỂM NỔI BẬT</h3>
             <div className="st-border"></div>
             <p style={{ whiteSpace: "pre-line" }} dangerouslySetInnerHTML={{
-              __html: convertTagsToHtml(`----The one who obtains the Holy Grail will have any wish come true.
-
-The Holy Grail War. A great ritual that materializes the greatest holy artifact, the Holy Grail. There are two conditions to participate in this ritual: being a magus and being a "Master" chosen by the Holy Grail.
-
-[img=/qua/bo.png]
-
-There are seven chosen Masters and seven classes of Servants, beings akin to superhumans with incredible fighting abilities. There is only one Holy Grail. If you wish for a miracle, prove that you are the strongest with your powers.
-
-Emiya Shirou is a high school student who has learned rudimentary magic from his father and uses it to fix objects. He finds himself engaged in the Holy Grail war as he gets attacked by a Servant. As he gets cornered, he somehow summons his Servant and manages to stay alive long enough to compete against the other Masters.
-
-[Partially taken from [url=http://mirrormoon.org/fate_stay_night]mirror moon[/url]]`)
+              __html: convertTagsToHtml(data.description)
             }}></p>
             <div className="st-border"></div>
           </div>
@@ -234,26 +213,13 @@ Emiya Shirou is a high school student who has learned rudimentary magic from his
             <div className="recommendations">
               <h4 className='highlighted'>SẢN PHẨM LIÊN QUAN</h4>
               <ul>
-                <li>
-                  <Link>
-                    <RecommendItem />
-                  </Link>
-                </li>
-                <li>
-                  <Link>
-                    <RecommendItem />
-                  </Link>
-                </li>
-                <li>
-                  <Link>
-                    <RecommendItem />
-                  </Link>
-                </li>
-                <li>
-                  <Link>
-                    <RecommendItem />
-                  </Link>
-                </li>
+                {ads.map((e, i) => (
+                  <li key={i}>
+                    <Link to={`/product/${e.ID}`}>
+                      <RecommendItem props={e} />
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

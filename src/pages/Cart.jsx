@@ -7,6 +7,7 @@ const Cart = () => {
   const navigate = useNavigate()
   const [cart, setCart] = useState(localStorage.getItem('cart'))
   const [updateCart, setUpdateCart] = useState(JSON.parse(cart))
+  console.log(updateCart)
 
 
   // handleDelete
@@ -20,7 +21,7 @@ const Cart = () => {
     else {
       localStorage.removeItem('cart')
       setCart(null)
-      navigate('/gio-hang')
+      navigate('/cart')
     }
   }
 
@@ -37,7 +38,7 @@ const Cart = () => {
 
   const handleDefine = () => {
     localStorage.setItem('cart', JSON.stringify(updateCart))
-    navigate('/gio-hang')
+    navigate('/cart')
   }
 
 
@@ -75,8 +76,8 @@ const Cart = () => {
               </div>
               <div className="end-btn">
                 <button onClick={handleDefine} className='cart-end-btn'>Cập nhật</button>
-                <button onClick={() => { setCart(null); localStorage.removeItem('cart'); navigate('/gio-hang') }} className='cart-end-btn'>Xóa tất cả</button>
-                <button onClick={() => navigate('/thanh-toan')} className='cart-end-btn'>Thanh toán</button>
+                <button onClick={() => { setCart(null); localStorage.removeItem('cart'); navigate('/cart') }} className='cart-end-btn'>Xóa tất cả</button>
+                <button onClick={() => navigate('/checkout')} className='cart-end-btn'>Thanh toán</button>
               </div>
             </>
           )}

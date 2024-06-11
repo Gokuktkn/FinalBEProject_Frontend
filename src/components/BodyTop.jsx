@@ -8,10 +8,9 @@ const BodyTop = ({ props }) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     const [itemInfo, setItemInfo] = useState(false)
-    console.log(props)
     return (
         <>
-            <Link to={`/product/${props.itemName}`} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }} style={{background: `url(${props.images[0]})`}}>
+            <Link to={`/product/${props.ID}`} className='item-info' onMouseEnter={() => { setItemInfo(true) }} onMouseLeave={() => { setItemInfo(false) }} style={{background: `url(${props.images[0]})`}}>
 
                 <div className="info" style={!itemInfo ? {
                     visibility: "hidden",

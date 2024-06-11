@@ -9,7 +9,7 @@ const ItemMiddle = ({ props }) => {
     }
     return (
         <>
-            <Link to={`/product/${props.itemName}`} className='link-product-cart-2' >
+            <Link to={`/product/${props.ID}`} className='link-product-cart-2' >
                 <div className="discount">
                     <p>-${Math.ceil(props.discount / props.price)}%</p>
                     <FaStar />

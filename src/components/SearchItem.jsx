@@ -15,7 +15,7 @@ const SearchItem = ({ props }) => {
 
 
   return (
-    <Link to={`/product/${props.itemName}`} className='redirect-btn'>
+    <Link to={`/product/${props.ID}`} className='redirect-btn'>
       <div className='item'>
         <div className="discount-percentage">
           <p>-{Math.ceil(props.discount / props.price)}%;</p>

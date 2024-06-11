@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import { PuffLoader } from "react-spinners";
 import '../css/Search.scss'
 import { Pagination } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SearchItem from '../components/SearchItem';
+import { fetchAPI } from '../../fetchApi';
 
 const theme = createTheme({
   palette: {
@@ -105,11 +106,16 @@ const Search = () => {
 
 
   const [param] = new useSearchParams();
-  const data = param.get("key");
+  const query = param.get("q");
 
 
 
   const [loading, setLoading] = useState(false)
+  const [data, setData] = useState([])
+
+  useEffect(() =>{
+    fetchAPI(`/search-item/${query}`, 'GET').then(e => console.log(e))
+  }, [])
 
 
   // START TEST CODE

@@ -1,11 +1,13 @@
 .recommend-item {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     padding: 0 20px 0 0;
     color: black;
+    grid-template-columns: 40% 60%;
+    align-items: center;
 
     img {
-        width: 40%;
+        width: 100%;
     }
 
     .description {

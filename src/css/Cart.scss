@@ -72,9 +72,17 @@
                         justify-content: center;
 
                         button {
-                            width: 90%;
+                            width: 100%;
                             padding: 10px 0;
                             text-align: center;
+                            background-color: #1dc483;
+                            cursor: pointer;
+                            color: white;
+                            border: transparent;
+                            transition: .1s linear;
+                        }
+                        button:hover {
+                            background-color: #05a667;
                         }
                     }
                 }
@@ -86,6 +94,20 @@
             justify-content: end;
             width: 100%;
             gap: .5rem;
+            
+            .cart-end-btn {
+                cursor: pointer;
+                height: 2rem;
+                background-color: #1dc483;
+                border: solid 1px #e8e8e8;
+                padding: 6px 4px;
+                color: white;
+                border-radius: .2rem;
+            }
+
+            .cart-end-btn:hover {
+                background-color: #05a667;
+            }
         }
     }
 }
