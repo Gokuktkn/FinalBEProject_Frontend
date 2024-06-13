@@ -128,15 +128,20 @@ const Create = () => {
       console.log(productType)
 
       const data = await fetchIMG('/item/create', 'POST', formData, localStorage.getItem('token'))
-      console.log(data)
-
-
-      Swal.fire({
-        title: 'Sản phẩm đã được tạo!',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      })
-
+      if (data.status === 201) {
+        Swal.fire({
+          title: 'Sản phẩm đã được tạo!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        })
+      }
+      else {
+        Swal.fire({
+          title: data.message,
+          icon: 'error',
+          confirmButtonText: 'OK',
+        })
+      }
       // setLoading(false)
     }
   };
