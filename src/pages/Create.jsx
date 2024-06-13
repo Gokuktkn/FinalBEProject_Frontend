@@ -18,14 +18,14 @@ const Create = () => {
   const [inputVisibleIndex, setInputVisibleIndex] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
-  // Type của attributes
-  const handleClose = (removedType, attrIndex) => {
+  // Tag của attributes
+  const handleClose = (removedTag, attrIndex) => {
     const newAttributes = [...attributes];
-    newAttributes[attrIndex].types = newAttributes[attrIndex].types.filter(type => type !== removedType);
+    newAttributes[attrIndex].type = newAttributes[attrIndex].type.filter(tag => tag !== removedTag);
     setAttributes(newAttributes);
   };
 
-  // Show input khi ấn vào type
+  // Show input khi ấn vào tag
   const showInput = (index) => {
     setInputVisibleIndex(index);
   };
@@ -34,11 +34,11 @@ const Create = () => {
     setInputValue(e.target.value);
   };
 
-  // Nhập thông tin vào type
+  // Nhập thông tin vào tag
   const handleInputConfirm = (attrIndex) => {
-    if (inputValue && !attributes[attrIndex].types.includes(inputValue)) {
+    if (inputValue && !attributes[attrIndex].type.includes(inputValue)) {
       const newAttributes = [...attributes];
-      newAttributes[attrIndex].types = [...newAttributes[attrIndex].types, inputValue];
+      newAttributes[attrIndex].type = [...newAttributes[attrIndex].type, inputValue];
       setAttributes(newAttributes);
     }
     setInputVisibleIndex(null);
@@ -72,7 +72,7 @@ const Create = () => {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        setAttributes([...attributes, { name: result.value, types: [] }]);
+        setAttributes([...attributes, { name: result.value, type: [] }]);
       }
     });
   };
@@ -194,31 +194,31 @@ const Create = () => {
               <Button onClick={() => handleDeleteAttribute(index)} type="link" danger style={{ padding: "0 20px" }}>Xóa</Button>
             </div>
             <div>
-              {attribute.types.map((type, typeIndex) => {
-                const isLongType = type.length > 20;
-                const typeElem = (
+              {attribute.type.map((tag, tagIndex) => {
+                const isLongTag = tag.length > 20;
+                const tagElem = (
                   <Tag
-                    className="edit-type"
-                    key={type}
+                    className="edit-tag"
+                    key={tag}
                     closable
-                    onClose={() => handleClose(type, index)}
+                    onClose={() => handleClose(tag, index)}
                   >
-                    <span>{isLongType ? `${type.slice(0, 20)}...` : type}</span>
+                    <span>{isLongTag ? `${tag.slice(0, 20)}...` : tag}</span>
                   </Tag>
                 );
-                return isLongType ? (
-                  <Tooltip title={type} key={type}>
-                    {typeElem}
+                return isLongTag ? (
+                  <Tooltip title={tag} key={tag}>
+                    {tagElem}
                   </Tooltip>
                 ) : (
-                  typeElem
+                  tagElem
                 );
               })}
               {inputVisibleIndex === index && (
                 <Input
                   type="text"
                   size="small"
-                  className="type-input"
+                  className="tag-input"
                   value={inputValue}
                   onChange={handleInputChange}
                   onBlur={() => handleInputConfirm(index)}
@@ -226,8 +226,8 @@ const Create = () => {
                 />
               )}
               {inputVisibleIndex !== index && (
-                <Tag className="site-type-plus" onClick={() => showInput(index)}>
-                  <PlusOutlined /> New Type
+                <Tag className="site-tag-plus" onClick={() => showInput(index)}>
+                  <PlusOutlined /> New Tag
                 </Tag>
               )}
             </div>
