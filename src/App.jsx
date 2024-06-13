@@ -17,6 +17,7 @@ import Cart from './pages/Cart.jsx'
 import Account from './pages/Account.jsx'
 import { refreshTokenResetter } from '../fetchApi.js'
 import ProductPage from './pages/ProductPage.jsx'
+import Checkout from './pages/Checkout.jsx'
 
 function App() {
 
@@ -71,6 +72,7 @@ function App() {
         <Route path='/cart' element={<Cart />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='*' element={<NotFound />}></Route>
+        <Route path='/checkout' element={<Checkout />}></Route>
       </Routes>
       <Footer></Footer>
     </>

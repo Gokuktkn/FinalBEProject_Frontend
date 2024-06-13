@@ -8,11 +8,12 @@ const { Option } = Select;
 
 const Create = () => {
   const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState(1);
-  const [discount, setDiscount] = useState(1);
+  const [productPrice, setProductPrice] = useState(1000);
+  const [discount, setDiscount] = useState(1000);
   const [productType, setProductType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [images, setImages] = useState([]);
+  const [imagesData, setImagesData] = useState([])
   const [productDescription, setProductDescription] = useState('');
   const [inputVisibleIndex, setInputVisibleIndex] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -81,6 +82,9 @@ const Create = () => {
     const files = Array.from(e.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages([...images, ...newImages]);
+
+    const file = e.target.files[0];
+    setImagesData([...imagesData, file])
   };
 
   const handleImageRemove = (index) => {
@@ -101,22 +105,31 @@ const Create = () => {
       discount,
       productType,
       attributes,
-      images,
+      ImageData,
       productDescription,
     };
     console.log(newProductData);
-    Swal.fire({
-      title: 'Sản phẩm đã được tạo!',
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-    setProductName('');
-    setProductPrice(0);
-    setDiscount(0);
-    setProductType('');
-    setAttributes([]);
-    setImages([]);
-    setProductDescription('');
+
+    if(imagesData.length == 0) {
+      Swal.fire({
+        title: 'Ảnh không được phép bỏ trống'
+      })
+    }
+    else {
+      const formData = new FormData();
+      // formData.append('items', imagesData, imagesData.map(e => e.name))
+      formData.append('itemName', productName)
+      formData.append('price', productPrice)
+      formData.append('discount', discount)
+      // formData.append('itemName', productName)
+      // formData.append('itemName', productName)
+      
+      Swal.fire({
+        title: 'Sản phẩm đã được tạo!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    }
   };
 
 //   START
@@ -139,20 +152,22 @@ const Create = () => {
           />
         </Form.Item>
         <Form.Item className="product-info">
-          <label htmlFor="price">Giá sản phẩm</label>
+          <label htmlFor="price">Giá bán</label>
           <Input
+            min={1000}
             value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
+            onChange={(e) => setProductPrice(parseInt(e.target.value))}
             required
             id="price"
             type="number"
           />
         </Form.Item>
         <Form.Item className="product-info">
-          <label htmlFor="discount">Giảm giá (%)</label>
+          <label htmlFor="discount">Giá gốc</label>
           <Input
+            min={1000}
             value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
+            onChange={(e) => setDiscount(parseInt(e.target.value))}
             required
             id="discount"
             type="number"
@@ -257,7 +272,7 @@ const Create = () => {
           />
         </Form.Item>
         <Form.Item className="create-submit">
-          <Button type="submit" className="submit-btn">
+          <Button type="submit" className="submit-btn" onClick={handleSubmit}>
             Tạo sản phẩm
           </Button>
         </Form.Item>

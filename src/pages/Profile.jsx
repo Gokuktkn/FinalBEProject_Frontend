@@ -49,7 +49,6 @@ const ProfileUpdate = () => {
 
       if (response.status === 201) {
         localStorage.setItem('user', JSON.stringify(response.data.user))
-        console.log(response.data)
         setLoading(false)
         Swal.fire(
           {
