@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Select, Tooltip, Upload, message } from 'antd';
+import { Form, Input, Button, Select, Tooltip, Upload, message, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import "../css/Create.css";
@@ -8,42 +8,48 @@ const { Option } = Select;
 
 const Create = () => {
   const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [discount, setDiscount] = useState('');
+  const [productPrice, setProductPrice] = useState(1);
+  const [discount, setDiscount] = useState(1);
   const [productType, setProductType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [images, setImages] = useState([]);
   const [productDescription, setProductDescription] = useState('');
-  const [newTag, setNewTag] = useState('');
-  const [inputVisible, setInputVisible] = useState(false);
+  const [inputVisibleIndex, setInputVisibleIndex] = useState(null);
   const [inputValue, setInputValue] = useState('');
-  const [editInputIndex, setEditInputIndex] = useState(-1);
-  const [editInputValue, setEditInputValue] = useState('');
 
+  // Tag của attributes
   const handleClose = (removedTag, attrIndex) => {
     const newAttributes = [...attributes];
     newAttributes[attrIndex].tags = newAttributes[attrIndex].tags.filter(tag => tag !== removedTag);
     setAttributes(newAttributes);
   };
 
-  const showInput = () => {
-    setInputVisible(true);
+  // Show input khi ấn vào tag
+  const showInput = (index) => {
+    setInputVisibleIndex(index);
   };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
+  // Nhập thông tin vào tag
   const handleInputConfirm = (attrIndex) => {
     if (inputValue && !attributes[attrIndex].tags.includes(inputValue)) {
       const newAttributes = [...attributes];
       newAttributes[attrIndex].tags = [...newAttributes[attrIndex].tags, inputValue];
       setAttributes(newAttributes);
     }
-    setInputVisible(false);
+    setInputVisibleIndex(null);
     setInputValue('');
   };
 
+  // Hàm kiểm tra trùng lặp tên attribute
+  const isDuplicateAttributeName = (name) => {
+    return attributes.some(attribute => attribute.name === name);
+  };
+
+  // Thêm thuộc tính
   const addAttribute = () => {
     Swal.fire({
       title: 'Nhập tên đặc tính',
@@ -55,9 +61,13 @@ const Create = () => {
       preConfirm: (attributeName) => {
         if (!attributeName) {
           Swal.showValidationMessage('Tên đặc tính không được bỏ trống');
-        } else {
-          return attributeName;
+          return false;
         }
+        if (isDuplicateAttributeName(attributeName)) {
+          Swal.showValidationMessage('Tên đặc tính đã tồn tại');
+          return false;
+        }
+        return attributeName;
       }
     }).then((result) => {
       if (result.isConfirmed) {
@@ -66,6 +76,7 @@ const Create = () => {
     });
   };
 
+  // Img preview
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
@@ -75,6 +86,11 @@ const Create = () => {
   const handleImageRemove = (index) => {
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
+  };
+
+  const handleDeleteAttribute = (index) => {
+    const newAttributes = attributes.filter((_, attrIndex) => attrIndex !== index);
+    setAttributes(newAttributes);
   };
 
   const handleSubmit = (e) => {
@@ -95,13 +111,18 @@ const Create = () => {
       confirmButtonText: 'OK'
     });
     setProductName('');
-    setProductPrice('');
-    setDiscount('');
+    setProductPrice(0);
+    setDiscount(0);
     setProductType('');
     setAttributes([]);
     setImages([]);
     setProductDescription('');
   };
+
+//   START
+// Input: tất cả trong data submit: productName, productPrice, discount, productType, attributes, images, productDescription
+// CODE HERE
+//   END
 
   return (
     <div className="create-container content-container">
@@ -153,7 +174,10 @@ const Create = () => {
         </Form.Item>
         {attributes.map((attribute, index) => (
           <Form.Item key={index} className="product-info">
-            <label>{attribute.name}</label>
+            <div className="attribute-name" style={{ display: "flex" }}>
+              <label style={{ padding: "5px 0 0" }}>{attribute.name} </label>
+              <Button onClick={() => handleDeleteAttribute(index)} type="link" danger style={{ padding: "0 20px" }}>Xóa</Button>
+            </div>
             <div>
               {attribute.tags.map((tag, tagIndex) => {
                 const isLongTag = tag.length > 20;
@@ -175,7 +199,7 @@ const Create = () => {
                   tagElem
                 );
               })}
-              {inputVisible && (
+              {inputVisibleIndex === index && (
                 <Input
                   type="text"
                   size="small"
@@ -186,8 +210,8 @@ const Create = () => {
                   onPressEnter={() => handleInputConfirm(index)}
                 />
               )}
-              {!inputVisible && (
-                <Tag className="site-tag-plus" onClick={showInput}>
+              {inputVisibleIndex !== index && (
+                <Tag className="site-tag-plus" onClick={() => showInput(index)}>
                   <PlusOutlined /> New Tag
                 </Tag>
               )}
