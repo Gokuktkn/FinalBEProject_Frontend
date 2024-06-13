@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Select, Tooltip, Upload, message, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+import { fetchIMG } from '../../fetchApi'
 import "../css/Create.css";
 
 const { Option } = Select;
 
 const Create = () => {
   const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState(1000);
-  const [discount, setDiscount] = useState(1000);
+  const [productPrice, setProductPrice] = useState(10000);
+  const [discount, setDiscount] = useState(10000);
   const [productType, setProductType] = useState('');
   const [attributes, setAttributes] = useState([]);
   const [images, setImages] = useState([]);
@@ -90,6 +91,9 @@ const Create = () => {
   const handleImageRemove = (index) => {
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
+
+    const newImagesData = imagesData.filter((_, i) => i !== index);
+    setImagesData(newImagesData)
   };
 
   const handleDeleteAttribute = (index) => {
@@ -97,45 +101,50 @@ const Create = () => {
     setAttributes(newAttributes);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newProductData = {
-      productName,
-      productPrice,
-      discount,
-      productType,
-      attributes,
-      ImageData,
-      productDescription,
-    };
-    console.log(newProductData);
+    // setLoading(true)
 
-    if(imagesData.length == 0) {
+    if (imagesData.length == 0) {
       Swal.fire({
         title: 'Ảnh không được phép bỏ trống'
       })
+      setLoading(false)
     }
     else {
+
       const formData = new FormData();
-      // formData.append('items', imagesData, imagesData.map(e => e.name))
+      imagesData.map((e, i) => {
+        formData.append('items', e, i)
+      })
       formData.append('itemName', productName)
+      console.log(productPrice)
       formData.append('price', productPrice)
       formData.append('discount', discount)
-      // formData.append('itemName', productName)
-      // formData.append('itemName', productName)
-      
+      formData.append('variants', JSON.stringify(attributes))
+      formData.append('description', productDescription)
+      formData.append('food_type', productType)
+
+      console.log(productType)
+
+      const data = await fetchIMG('/item/create', 'POST', formData, localStorage.getItem('token'))
+      console.log(data)
+
+
       Swal.fire({
         title: 'Sản phẩm đã được tạo!',
         icon: 'success',
-        confirmButtonText: 'OK'
-      });
+        confirmButtonText: 'OK',
+      })
+
+      // setLoading(false)
     }
   };
 
-//   START
-// Input: tất cả trong data submit: productName, productPrice, discount, productType, attributes, images, productDescription
-// CODE HERE
-//   END
+  //   START
+  // Input: tất cả trong data submit: productName, productPrice, discount, productType, attributes, images, productDescription
+  // CODE HERE
+  //   END
 
   return (
     <div className="create-container content-container">
@@ -154,7 +163,7 @@ const Create = () => {
         <Form.Item className="product-info">
           <label htmlFor="price">Giá bán</label>
           <Input
-            min={1000}
+            min={10000}
             value={productPrice}
             onChange={(e) => setProductPrice(parseInt(e.target.value))}
             required
@@ -165,7 +174,7 @@ const Create = () => {
         <Form.Item className="product-info">
           <label htmlFor="discount">Giá gốc</label>
           <Input
-            min={1000}
+            min={10000}
             value={discount}
             onChange={(e) => setDiscount(parseInt(e.target.value))}
             required
@@ -181,10 +190,10 @@ const Create = () => {
             required
             id="product-type"
           >
-            <Option value="Hải sản">Hải sản</Option>
-            <Option value="Rau củ">Rau củ</Option>
-            <Option value="Thịt">Thịt</Option>
-            <Option value="Trái cây">Trái cây</Option>
+            <Option value="seafood">Hải sản</Option>
+            <Option value="vegetables">Rau củ</Option>
+            <Option value="meats">Thịt</Option>
+            <Option value="fruits">Trái cây</Option>
           </Select>
         </Form.Item>
         {attributes.map((attribute, index) => (
