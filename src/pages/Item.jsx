@@ -28,7 +28,7 @@ const Item = () => {
     fetchAPI(`/item/get-item/${params.id}`, 'GET').then(e => {
       if (e.status == 200) {
         setData(e.data.item)
-        setItemList(e.data.item.variants.map(type => ({ name: type.name, tag: type.type[0] })))
+        setItemList(e.data.item.variants.map(type => ({ name: type.name, type: type.type[0] })))
         fetchAPI(`/item/get-type/${e.data.item.food_type}/1`)
           .then(e => setAds(e.data.items.slice(0, 4)))
       }
@@ -52,10 +52,10 @@ const Item = () => {
 
   // SUBMIT
 
-  const handleType = (name, tag) => {
+  const handleType = (name, type) => {
     const index = itemList.findIndex(item => item.name === name);
     if (index !== -1) {
-      itemList[index].tag = tag;
+      itemList[index].type = type;
       setItemList([...itemList]); // spread operator to trigger re-render
     } else {
       setItemList([])
@@ -109,10 +109,6 @@ const Item = () => {
       .replace(regexURL, "<a href='$1'>$2</a>")
       .replace(regexIMG, "<img src='$1' style='margin-left: auto;display: block;transform: translateX(-50%);max-width: 480px'>");
   }
-
-
-  // test codes start here
-  // test codes end here
 
 
   return loading ? (<div style={{

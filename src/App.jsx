@@ -58,7 +58,7 @@ function App() {
 
   return (
     <>
-      {(location.pathname === '/signin' || location.pathname === '/signup') ? <HeaderAlt /> : <Header />}
+      {(location.pathname === '/signin' || location.pathname === '/signup') ? <HeaderAlt /> : (location.pathname === '/checkout') ? <></> : <Header />}
       <Routes>
         <Route path='/signup' element={<SignUp />}></Route>
         <Route path='/signin' element={<SignIn />}></Route>
@@ -74,7 +74,7 @@ function App() {
         <Route path='*' element={<NotFound />}></Route>
         <Route path='/checkout' element={<Checkout />}></Route>
       </Routes>
-      <Footer></Footer>
+      {(location.pathname === '/checkout') ? <></> : <Footer/>}
     </>
   )
 }
