@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { IoClose } from "react-icons/io5";
 import "../css/UpdateProductForm.css";
+import { fetchAPI } from '../../fetchApi.js';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateProductForm = ({ product, onUpdate, onClose }) => {
     const [updatedProduct, setUpdatedProduct] = useState(product);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -14,16 +17,24 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
 
     const handleUpdate = async () => {
         setLoading(true);
-        setTimeout(() => {
-            // Giả lập cập nhật sản phẩm
-            onUpdate(updatedProduct);
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công',
-                text: 'Cập nhật sản phẩm thành công!',
-            });
-            setLoading(false);
-        }, 500); // Giả lập độ trễ khi cập nhật
+        fetchAPI(`/item/update/${product.ID}`, 'PUT', { itemName: updatedProduct.itemName, price: updatedProduct.price, description: updatedProduct.description }, localStorage.getItem('token')).then(e => {
+            if (e.status === 201) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: 'Thay đổi thông tin thành công',
+                    timer: 10000
+                }).then(() => navigate(0))
+            }
+            else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: e.message,
+                })
+            }
+        })
+        setLoading(false)
     };
 
     const handleClose = () => {
@@ -39,8 +50,8 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
                     <input
                         type="text"
                         id="name"
-                        name="name"
-                        value={updatedProduct.name}
+                        name="itemName"
+                        value={updatedProduct.itemName}
                         onChange={handleChange}
                         required
                     />
@@ -48,7 +59,8 @@ const UpdateProductForm = ({ product, onUpdate, onClose }) => {
                 <div className="input-group">
                     <label htmlFor="price">Giá sản phẩm</label>
                     <input
-                        type="text"
+                        min={10000}
+                        type="number"
                         id="price"
                         name="price"
                         value={updatedProduct.price}

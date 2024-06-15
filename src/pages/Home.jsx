@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../css/Home.scss'
 import BodyTop from '../components/BodyTop'
-// import Swiper core and required modules
 import { Autoplay } from 'swiper/modules';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -29,16 +27,10 @@ const Home = () => {
   const swiperRef4 = useRef(null)
 
   const [fruits, setFruits] = useState([])
-  const [vegetables, setVegetables] = useState([])
-  const [meats, setMeats] = useState([])
-  const [seafood, setSeafood] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchAPI('/item/get-type/fruits/1', 'GET').then(e => setFruits(e.data.items))
-    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setVegetables(e.data.items))
-    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setMeats(e.data.items))
-    // fetchAPI('/item/get-type/vegetabes', 'GET').then(e => setSeafood(e.data.items))
+    fetchAPI('/item/get-all/1', 'GET').then(e => setFruits(e.data.items))
     const timeout = setTimeout(() => {
       setLoading(false)
     }, 1000);
@@ -46,7 +38,6 @@ const Home = () => {
       clearTimeout(timeout)
     }
   }, [])
-  console.log(fruits, loading)
 
 
 

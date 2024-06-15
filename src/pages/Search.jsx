@@ -18,92 +18,6 @@ const theme = createTheme({
 
 const Search = () => {
 
-  // DELETE after use
-
-  const array = [
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/bo.png"
-      ]
-    },
-    {
-      itemName: "what",
-      price: 25000,
-      discount: 30000,
-      img: [
-        "/qua/chuoi.png"
-      ]
-    },
-
-  ]
-
 
   const [param] = new useSearchParams();
   const query = param.get("q");
@@ -116,6 +30,7 @@ const Search = () => {
   useEffect(() => {
     setLoading(true)
     fetchAPI(`/item/search-item/${query}`, 'GET').then(e => {
+      console.log(e)
       if (e.status === 200) {
         let finalArray = []
 
@@ -131,10 +46,9 @@ const Search = () => {
       else {
         console.log(e)
       }
-      setLoading(false)
     })
+    setLoading(false)
   }, [query])
-  console.log(data)
 
 
 
@@ -151,8 +65,10 @@ const Search = () => {
     // array length === 0
     loading ? (<>
       <PuffLoader color='#1dc483' className='loader' />
-    </>) : !data ? (<div>
-      Không có kết quả
+    </>) : !data ? (<div style={{ margin: '100px 0 200px 50%', transform: "translateX(-20%)" }}>
+      <h1>
+        Không tìm thấy kết quả
+      </h1>
     </div>) : (<div className='search-container'>
       <div className="pagination">
         <ThemeProvider theme={theme}>

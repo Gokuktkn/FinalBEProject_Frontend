@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import "../css/Management.css";
 import ManagementItems from '../components/ManagementItems';
 import { IoSearch } from "react-icons/io5";
 import UpdateProductForm from '../components/UpdateProductForm';
+import { fetchAPI } from '../../fetchApi';
+import { useNavigate } from 'react-router-dom';
 
-const dummyProducts = [
-    { id: 1, name: 'Sản phẩm 1', image: 'https://via.placeholder.com/150', price: 100000 },
-    { id: 2, name: 'Sản phẩm 2', image: 'https://via.placeholder.com/150', price: 150000 },
-    { id: 3, name: 'Sản phẩm 3', image: 'https://via.placeholder.com/150', price: 200000 },
-    { id: 4, name: 'Sản phẩm 4', image: 'https://via.placeholder.com/150', price: 250000 },
-    { id: 5, name: 'Sản phẩm 5', image: 'https://via.placeholder.com/150', price: 300000 },
-];
 
 function Management() {
     const [products, setProducts] = useState([]);
@@ -20,23 +14,15 @@ function Management() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    const navigate = useNavigate()
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            // Fetch data from API
-            try {
-                // const response = await axios.get('/api/products');
-                // setProducts(response.data);
-                // setFilteredProducts(response.data);
-
-                // Using dummy data for now
-                setProducts(dummyProducts);
-                setFilteredProducts(dummyProducts);
-            } catch (error) {
-                console.error('Error fetching products:', error);
+        fetchAPI('/item/get-all/1', 'GET').then(e => {
+            if (e.status === 200) {
+                setProducts(e.data.items)
+                setFilteredProducts(e.data.items)
             }
-        };
-
-        fetchProducts();
+        })
     }, []);
 
     const handleSearch = () => {
@@ -57,34 +43,22 @@ function Management() {
             cancelButtonText: 'Hủy',
         }).then((result) => {
             if (result.isConfirmed) {
-                // Call API to delete product
-                // axios.delete(`/api/products/${productId}`)
-                //     .then(() => {
-                //         setProducts(products.filter(product => product.id !== productId));
-                //         setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
-                //     })
-                //     .catch(error => console.error('Error deleting product:', error));
-
-                // Using dummy delete for now
-                setProducts(products.filter(product => product.id !== productId));
-                setFilteredProducts(filteredProducts.filter(product => product.id !== productId));
+                fetchAPI(`/item/delete/${productId}`, 'DELETE', [], localStorage.getItem('token')).then(e => console.log(e))
 
                 Swal.fire(
-                    'Đã xóa!',
-                    'Sản phẩm đã được xóa.',
-                    'success'
-                );
+                    {
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Đã xóa thành công',
+                        timer: 5000
+                    }
+                ).then(() => navigate(0))
             }
         });
     };
 
     const handleEdit = (product) => {
         setSelectedProduct(product);
-    };
-
-    const handleUpdateProduct = (updatedProduct) => {
-        setProducts(products.map(product => product.id === updatedProduct.id ? updatedProduct : product));
-        setFilteredProducts(filteredProducts.map(product => product.id === updatedProduct.id ? updatedProduct : product));
     };
 
     const handleCloseFrame = () => {
@@ -104,7 +78,7 @@ function Management() {
                 <button onClick={handleSearch}><IoSearch /></button>
             </div>
             <div className="product-list">
-                {filteredProducts.length > 0 ? (
+                {products.length > 0 ? (
                     <table>
                         <thead>
                             <tr>
@@ -116,8 +90,8 @@ function Management() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProducts.map(product => (
-                                <ManagementItems key={product.id} product={product} onDelete={handleDelete} onEdit={handleEdit} />
+                            {products.map((product, i) => (
+                                <ManagementItems key={i} product={product} onDelete={handleDelete} onEdit={handleEdit} />
                             ))}
                         </tbody>
                     </table>
@@ -127,7 +101,7 @@ function Management() {
             </div>
             {selectedProduct && (
                 <div className='update-frame'>
-                    <UpdateProductForm product={selectedProduct} onUpdate={handleUpdateProduct} onClose={handleCloseFrame} />
+                    <UpdateProductForm product={selectedProduct} onClose={handleCloseFrame} />
                 </div>
             )}
         </div>
