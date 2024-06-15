@@ -8,6 +8,8 @@ const Checkout = () => {
     navigate('/signin')
   }
 
+  const items = localStorage.getItem('cart')
+
   return (
     <div>Checkout</div>
   )
