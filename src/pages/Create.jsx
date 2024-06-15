@@ -84,8 +84,10 @@ const Create = () => {
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages([...images, ...newImages]);
 
-    const file = e.target.files[0];
-    setImagesData([...imagesData, file])
+    const newImagesData = [...imagesData, ...files]; // Lưu toàn bộ files vào imagesData
+    setImagesData(newImagesData);
+    console.log(imagesData);
+    console.log(images)
   };
 
   const handleImageRemove = (index) => {
@@ -118,7 +120,6 @@ const Create = () => {
         formData.append('items', e, i)
       })
       formData.append('itemName', productName)
-      console.log(productPrice)
       formData.append('price', productPrice)
       formData.append('discount', discount)
       formData.append('variants', JSON.stringify(attributes))
@@ -131,7 +132,9 @@ const Create = () => {
           title: 'Sản phẩm đã được tạo!',
           icon: 'success',
           confirmButtonText: 'OK',
-        })
+        }).then(() => {
+          window.location.reload(); // Tải lại trang sau khi submit thành công
+        });
       }
       else {
         Swal.fire({
@@ -140,6 +143,8 @@ const Create = () => {
           confirmButtonText: 'OK',
         })
       }
+      console.log("img:",images)
+      console.log("img data:",imagesData)
       // setLoading(false)
     }
   };

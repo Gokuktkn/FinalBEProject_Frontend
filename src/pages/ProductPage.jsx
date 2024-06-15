@@ -1,34 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../css/ProductPage.scss';
+import { fetchAPI } from '../../fetchApi';
+import { PuffLoader } from 'react-spinners';
 
 const ProductPage = () => {
   const { category } = useParams();
   let categoryName = "";
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const allProducts = [
-    { id: 1, name: 'Táo', category: 'fruits', description: 'Táo đỏ sạch', price: '50,000 VND' },
-    { id: 2, name: 'Cam', category: 'fruits', description: 'Cam tươi ngon', price: '30,000 VND' },
-    { id: 3, name: 'Cải bó xôi', category: 'vegetables', description: 'Rau cải bó xôi', price: '20,000 VND' },
-    { id: 4, name: 'Thịt bò', category: 'meats', description: 'Thịt bò sạch', price: '150,000 VND' },
-    { id: 5, name: 'Tôm', category: 'seafood', description: 'Tôm sạch', price: '200,000 VND' }
-  ];
+  // Hàm dùng để xử lý mô tả sản phẩm
+  const processDescription = (description, expanded) => {
+    // Loại bỏ các phần tử trong ngoặc vuông
+    const cleanDescription = description.replace(/\[.*?\]/g, '');
+    // Chia đoạn mô tả thành các dòng
+    const lines = cleanDescription.split('\\n');
+
+    // Giới hạn ký tự hiển thị nếu không mở rộng
+    const limit = 100;
+    const shortDescription = lines.join(' ').slice(0, limit);
+
+    if (expanded) {
+      // Nếu mở rộng, hiển thị toàn bộ mô tả
+      return lines.map((line, index) => (
+        <React.Fragment key={index}>
+          {line}
+          <br />
+        </React.Fragment>
+      ));
+    } else {
+      // Nếu không mở rộng, hiển thị mô tả giới hạn ký tự
+      return (
+        <React.Fragment>
+          {shortDescription}...
+        </React.Fragment>
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
-      // Uncomment and replace with actual API call
-      // const response = await fetch(`https://api.example.com/products?category=${category}`);
-      // const data = await response.json();
-
-      let filteredProducts = allProducts; // Use mock data for now
-      if (category && category !== 'all') {
-        filteredProducts = allProducts.filter(product => product.category === category);
+      setLoading(true);
+      const response = category != "all" ? await fetchAPI(`/item/get-type/${category}/1`, 'GET') : await fetchAPI(`/item/get-all`, 'GET');
+      if (response.data && Array.isArray(response.data.items)) {
+        const processedItems = response.data.items.map(item => {
+          // Xử lý mô tả sản phẩm
+          const processedDescription = processDescription(item.description);
+          return { ...item, description: processedDescription };
+        });
+        setProducts(processedItems);
       }
-      setProducts(filteredProducts);
+
+      setLoading(false);
     };
     fetchProducts();
   }, [category]);
+  console.log(products)
 
   switch (category) {
     case "fruits":
@@ -48,16 +76,21 @@ const ProductPage = () => {
       break;
   }
 
-  return (
+  return (loading ? (<div style={{
+    margin: "120px 0",
+    marginLeft: "50%",
+  }}>
+    <PuffLoader color="#1dc483" />
+  </div>) : (
     <div className="product-page">
       <h1>{categoryName === 'all' ? 'Tất cả sản phẩm' : `Sản phẩm: ${categoryName}`}</h1>
       <div className="products-container">
         {products.map((product) => (
-          <Link to={`/product/${product.id}`} key={product.id} className="product-link">
+          <Link to={`/product/${product.ID}`} key={product.ID} className="product-link">
             <div className="product-card">
-              <img src={"/qua/bo.png"} alt={product.name} className="product-image" />
+              <img src={`${product.images[0]}`} alt={product.name} className="product-image" />
               <div className="product-details">
-                <h2>{product.name}</h2>
+                <h2>{product.itemName}</h2>
                 <p>{product.description}</p>
                 <p className="product-price">{product.price}</p>
               </div>
@@ -66,7 +99,7 @@ const ProductPage = () => {
         ))}
       </div>
     </div>
-  );
+  ));
 };
 
 export default ProductPage;
