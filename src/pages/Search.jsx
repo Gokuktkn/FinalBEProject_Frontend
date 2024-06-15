@@ -70,15 +70,15 @@ const Search = () => {
         Không tìm thấy kết quả
       </h1>
     </div>) : (<div className='search-container'>
-      <div className="pagination">
-        <ThemeProvider theme={theme}>
-          <Pagination count={Math.ceil(data.length / 8)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
-        </ThemeProvider>
-      </div>
       <div className="results">
         {data[page - 1].map((e, i) => (
           <SearchItem key={i} props={e} />
         ))}
+      </div>
+      <div className="pagination">
+        <ThemeProvider theme={theme}>
+          <Pagination count={Math.ceil(data.length / 8)} color='primary' showFirstButton showLastButton onChange={handlePageChange} />
+        </ThemeProvider>
       </div>
     </div>)
   )

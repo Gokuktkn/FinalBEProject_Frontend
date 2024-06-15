@@ -125,8 +125,6 @@ const Create = () => {
       formData.append('description', productDescription)
       formData.append('food_type', productType)
 
-      console.log(productType)
-
       const data = await fetchIMG('/item/create', 'POST', formData, localStorage.getItem('token'))
       if (data.status === 201) {
         Swal.fire({
@@ -145,11 +143,6 @@ const Create = () => {
       // setLoading(false)
     }
   };
-
-  //   START
-  // Input: tất cả trong data submit: productName, productPrice, discount, productType, attributes, images, productDescription
-  // CODE HERE
-  //   END
 
   return (
     <div className="create-container content-container">
