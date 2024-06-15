@@ -126,8 +126,6 @@ const Create = () => {
       formData.append('description', productDescription)
       formData.append('food_type', productType)
 
-      console.log(productType)
-
       const data = await fetchIMG('/item/create', 'POST', formData, localStorage.getItem('token'))
       if (data.status === 201) {
         Swal.fire({
