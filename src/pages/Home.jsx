@@ -30,13 +30,14 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchAPI('/item/get-all/1', 'GET').then(e => setFruits(e.data.items))
-    const timeout = setTimeout(() => {
-      setLoading(false)
-    }, 1000);
-    return () => {
-      clearTimeout(timeout)
-    }
+    fetchAPI('/item/get-all/1', 'GET').then(e => setFruits(e.data.items));
+    setLoading(false);
+    // const timeout = setTimeout(() => {
+    //   setLoading(false)
+    // }, 1000);
+    // return () => {
+    //   clearTimeout(timeout)
+    // }
   }, [])
 
 

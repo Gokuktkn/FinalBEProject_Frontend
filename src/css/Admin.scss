@@ -1,0 +1,23 @@
+.admin-container,
+.account-container {
+    max-width: 1170px;
+    margin: 25px auto;
+    display: flex;
+    border-radius: 5px;
+
+    .admin-navbar,
+    .account-navbar {
+        flex: 1;
+        padding: 20px;
+        min-width: 200px;
+        border-radius: 5px;
+
+        .admin-navbar-content,
+        .account-navbar-content {
+            border: 1px solid #1DC483;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
