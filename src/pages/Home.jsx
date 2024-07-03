@@ -27,11 +27,21 @@ const Home = () => {
   const swiperRef4 = useRef(null)
 
   const [fruits, setFruits] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAPI('/item/get-all/1', 'GET').then(e => setFruits(e.data.items));
-    setLoading(false);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetchAPI('/item/get-all/1', 'GET');
+        setFruits(response.data.items);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
     // const timeout = setTimeout(() => {
     //   setLoading(false)
     // }, 1000);
@@ -39,8 +49,6 @@ const Home = () => {
     //   clearTimeout(timeout)
     // }
   }, [])
-
-
 
 
   // TEST CODE
@@ -106,15 +114,16 @@ const Home = () => {
   // END TEST CODE
 
   let temp = []
-  for(let i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     temp.push(fruits[i])
   }
 
+  // console.log(loading)
   return (loading ? (<div style={{
     margin: "120px 0",
     marginLeft: "50%",
   }}>
-    <PuffLoader color="#1dc483"/>
+    <PuffLoader color="#1dc483" />
   </div>) : (
     <div className="body">
       <div className="body-top">
@@ -195,7 +204,7 @@ const Home = () => {
                 <h3 style={{ fontWeight: "600", borderBottom: ".5px solid #e6e6e6", paddingBottom: ".5rem" }}>SẢN PHẨM MỚI</h3>
                 <div className="body-middle-top-left-content-new">
                   {temp.map((e, i) => <ItemMiddle key={i} props={e} />)}
-                  
+
                 </div>
                 <div className="st-border"></div>
                 <div className="body-middle-top-left-content-discount">
