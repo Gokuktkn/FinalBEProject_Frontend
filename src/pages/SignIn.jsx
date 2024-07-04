@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import '../css/SignForm.scss'
-import "../css/Auth.css"
 import NavForm from '../components/NavForm'
 import { useNavigate } from 'react-router-dom';
 import { fetchAPI } from '../../fetchApi';

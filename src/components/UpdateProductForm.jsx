@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { IoClose } from "react-icons/io5";
-import "../css/UpdateProductForm.css";
+import "../css/UpdateProductForm.scss";
 import { fetchAPI } from '../../fetchApi.js';
 import { useNavigate } from 'react-router-dom';
 

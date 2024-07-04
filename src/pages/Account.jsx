@@ -1,5 +1,5 @@
 import React from 'react';
-import "../css/Admin.css";
+import "../css/Admin.scss";
 import ChangePassword from './ChangePassword';
 import ProfileUpdate from './Profile';
 import AccountNavbar from '../components/AccountNavbar';

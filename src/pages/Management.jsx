@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import "../css/Management.css";
+import "../css/Management.scss";
 import ManagementItems from '../components/ManagementItems';
 import { IoSearch } from "react-icons/io5";
 import UpdateProductForm from '../components/UpdateProductForm';

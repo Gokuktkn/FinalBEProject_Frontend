@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import '../css/ProfileUpdate.css';
+import '../css/ProfileUpdate.scss';
 import { useNavigate } from 'react-router-dom';
 import { fetchIMG } from '../../fetchApi.js';
 
