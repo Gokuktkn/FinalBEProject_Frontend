@@ -125,7 +125,7 @@
 
 /*HEADER BOTTOM CSS*/
 .header-bottom {
-    z-index: 10;
+    z-index: 2;
     height: 50px;
     background: #1dc483;
     border-bottom: 2px solid #05a667;
@@ -239,7 +239,7 @@ a.active {
 
 // bottom
 .header-bottom-dropdown {
-    z-index: 20;
+    z-index: 3;
 
     .dropbtn {
         padding-right: 1rem;

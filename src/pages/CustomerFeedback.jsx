@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import '../css/CustomerFeedback.css';
+import '../css/CustomerFeedback.scss';
 
 // Giả lập dữ liệu ý kiến khách hàng
 const feedbacks = [

@@ -3,7 +3,7 @@ import { Form, Input, Button, Select, Tooltip, Upload, message, Tag } from 'antd
 import { PlusOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import { fetchIMG } from '../../fetchApi'
-import "../css/Create.css";
+import "../css/Create.scss";
 
 const { Option } = Select;
 
